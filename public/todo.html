@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Todo-Verwaltung</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="js/todoApp.js"></script>
+</head>
+<body>
+<main class="container py-4">
+    <h1 class="mb-4">Todo-Verwaltung</h1>
+    <section class="card p-3 mb-4" aria-labelledby="form-heading">
+        <h2 id="form-heading" class="h5">Neues Todo</h2>
+        <form id="todo-form" novalidate>
+            <div class="mb-3">
+                <label for="todo-title" class="form-label">Titel (Pflichtfeld)</label>
+                <input class="form-control" id="todo-title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="todo-description" class="form-label">Beschreibung (Pflichtfeld)</label>
+                <textarea class="form-control" id="todo-description" name="description" rows="2" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="todo-priority" class="form-label">Priorität</label>
+                <select class="form-select" id="todo-priority" name="priority">
+                    <option value="hoch">hoch</option>
+                    <option value="mittel" selected>mittel</option>
+                    <option value="niedrig">niedrig</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="todo-due-date" class="form-label">Fälligkeitsdatum (optional)</label>
+                <input type="date" class="form-control" id="todo-due-date" name="dueDate">
+            </div>
+            <div id="error-msg" class="alert alert-danger d-none" role="alert"></div>
+            <button type="submit" class="btn btn-primary">Todo hinzufügen</button>
+        </form>
+    </section>
+    <section aria-labelledby="list-heading">
+        <h2 id="list-heading" class="h4">Todos</h2>
+        <p class="text-body-secondary">Karte anklicken, um Details und Bearbeitungsmöglichkeiten zu öffnen.</p>
+        <div id="todo-list"></div>
+    </section>
+    <section class="card p-3 mt-4" aria-labelledby="stats-heading">
+        <h2 id="stats-heading" class="h5">Statistik</h2>
+        <div id="stats" role="status" aria-live="polite"></div>
+    </section>
+</main>
+</body>
+</html>
