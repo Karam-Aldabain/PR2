@@ -1,4 +1,3 @@
-/*
 type TodoPriority = "hoch" | "mittel" | "niedrig";
 type TodoStatus = "offen" | "erledigt" | "in Bearbeitung";
 type Todo = [id: number, title: string, priority: TodoPriority, status: TodoStatus, deadline: Date];
@@ -76,4 +75,4 @@ function printStats(todos: Todo[]): void {
 }
 
 printStats(todos);
-*/
+
