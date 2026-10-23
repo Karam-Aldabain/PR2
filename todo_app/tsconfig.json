@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es2024",
+    "module": "ES2022",
+    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./public/js",
+    "noEmitOnError": true,
+    "moduleDetection": "legacy"
+  }
+}
