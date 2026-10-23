@@ -4,6 +4,10 @@ Eine kleine TypeScript-Anwendung zum Anlegen, Anzeigen, Bearbeiten und Löschen
 von Todos. Die Daten werden im Arbeitsspeicher gehalten und beim Neuladen
 zurückgesetzt. Eine REST-API wird später ergänzt.
 
+## Team
+* Mitglied1
+* Mitglied2
+
 ## Starten
 
 Voraussetzungen: Node.js mit npm.
