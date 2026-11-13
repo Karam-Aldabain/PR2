@@ -1,4 +1,4 @@
-Projektziel: Wir entwickeln eine benutzerfreundliche To-do-Anwendung mit serverseitiger Express-Datenverwaltung.
+Projektziel: Wir entwickeln eine benutzerfreundliche TypeScript-To-do-Anwendung mit serverseitiger Express-REST-API und ergänzen einen unabhängigen Java-Vert.x-Echo-Service.
 
 Die bestehende Oberfläche unterstützt das Anlegen, Anzeigen, Bearbeiten und Löschen von Todos sowie Statuswechsel, optionale Termine, aufklappbare Details und Statistiken.
 
