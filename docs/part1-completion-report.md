@@ -1,3 +1,5 @@
+> Historical/preparation record: local integration and fresh-clone verification have since completed. See [current audit](final-local-audit.md). Team/conflict and remote requirements remain open.
+
 # Part 1 completion report
 
 Date: 12 November 2026. Authority: HÜ1.pdf pages 2–4, mandatory sections 1.1–1.3. Optional section 1.4 is excluded. Part 1 is a Git/team/project-start assignment, not a missing application service.

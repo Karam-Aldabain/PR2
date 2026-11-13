@@ -1,3 +1,5 @@
+> Historical/preparation record: local integration and fresh-clone verification have since completed. See [current audit](final-local-audit.md). Team/conflict and remote requirements remain open.
+
 # Independent requirement audit: Part 2 and Part 3
 
 > Subsequent Part 1 work created the local HUE1 baseline from main without committing or integrating the working changes. See [the Part 1 report](part1-completion-report.md) for that newer branch/setup status; the submission and team-evidence gaps below remain unresolved.

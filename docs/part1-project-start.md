@@ -1,3 +1,5 @@
+> Historical/preparation record: local integration and fresh-clone verification have since completed. See [current audit](final-local-audit.md). Team/conflict and remote requirements remain open.
+
 # Teil 1: Projektstart und Ausgangsstand
 
 ## Maßgebliche Aufgabenstellung
