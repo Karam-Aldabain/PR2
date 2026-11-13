@@ -1,8 +1,8 @@
-# Mazen: concrete patch awaiting personal review
+# Mazen: approved patch and personal review record
 
 Status: PERSONALLY APPROVED; COMMITTED as 78be29ca1bc74ecbddbd0044f7684b9d4966640a; INTEGRATED through 07b5169e6a57f361a608f98eb72c4da3dfd2527c.
 
-The assistant prepared this patch at the user's request. It is not claimed to be independently implemented or reviewed by Mazen. Any later authorized commit must preserve that provenance; approval alone is not proof of original independent implementation or the joint academic exercise.
+The assistant prepared this patch at the user's request. Mazen personally reviewed and approved the exact patch; independent implementation by him is not claimed. Any later authorized commit must preserve that provenance; approval alone is not proof of original independent implementation or the joint academic exercise.
 
 - Confirmed name: Mazen Mohammad Yousef Alayaideh
 - Supplied GitLab username: mmya68
@@ -16,7 +16,7 @@ The 22-line patch adds one HTTP test in tests/api.test.mjs: valid resource creat
 
 Executed in that worktree: npm.cmd ci --offline, npm.cmd test (9 groups passed, 0 failed), npm.cmd run typecheck (passed), git diff --check (passed).
 
-Mazen must personally inspect the actual patch and confirm approval to commit this exact content using his name/email. Identity details and prior conditional permission are insufficient. No commit under his identity has been created. If he requests changes, prepare and retest the revised diff and obtain approval of that revision. Until then the draft stays uncommitted in its separate worktree and HUE1 stays clean.
+Before attribution, Mazen was required to inspect and approve the actual patch. He then supplied the explicit approval recorded below. The exact reviewed patch was committed and integrated; any future changed patch needs its own approval.
 
 ## Approval and execution record
 
