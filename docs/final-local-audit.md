@@ -1,12 +1,12 @@
 # Final local completion and compliance audit
 
-Date: 13 November 2026 (America/Los_Angeles). **NOT READY — ISSUES REMAIN** for the full assignment; the complete technical solution is integrated and tested locally in HUE1. The remaining mandatory team contribution/conflict requirements cannot be substituted by one student’s integration work.
+Date: 13 November 2026 (America/Los_Angeles). **NOT READY — ISSUES REMAIN** for the full assignment; the complete technical solution is integrated and tested locally in HUE1. Both students now have identifiable authorized commits; the independent two-student conflict/joint-decision requirement remains unverified.
 
-main remains exactly **c6acd6e640ee80388ec231bc04b1f4bfaf8fd26c**. All new commits use the explicitly confirmed repository-local identity Karam Samer Atallah Aldabain <Karam.Samer.Atallah.Aldabain@mni.thm.de> (GitLab username supplied: ksaa11). This records authorization to integrate reviewed existing work, not proof of who originally wrote every line. No teammate attribution, fabricated conflict, rewritten history, push or Moodle submission.
+main remains exactly **c6acd6e640ee80388ec231bc04b1f4bfaf8fd26c**. Integration/preparation commits use Karam Samer Atallah Aldabain <Karam.Samer.Atallah.Aldabain@mni.thm.de> (ksaa11). The exact assistant-prepared patch personally approved by Mazen is committed as 78be29c with his explicitly authorized author/committer identity Mazen Mohammad Yousef Alayaideh <Mazen.Mohammad.Yousef.Alayaideh@mni.thm.de> (mmya68). This records authorization to integrate reviewed existing work, not proof of who originally wrote every line. No unauthorized attribution, fabricated conflict, rewritten history, push or Moodle submission.
 
 Sources: complete local HÜ1.pdf (10 pages) and 05-Praxisblock - Vertx.pdf (23 pages), read during the preceding audit; mandatory 1.1–1.3, 2.1–2.6, 3.1–3.3 and Echo/User lecture exercises. Optional Fruit/HATEOAS excluded. The separate GitLab SSH lecture is unavailable. [Pre-integration audit](final-local-audit-before-integration.md) preserves earlier findings; those starter-only failures are superseded below.
 
-Counts: PASS 77; FAIL 0; MISSING 2; NOT TESTED 4; REMOTE CHECK 7; OPTIONAL 2. Checkpoints are not grading weights.
+Counts: PASS 78; FAIL 0; MISSING 1; NOT TESTED 4; REMOTE CHECK 7; OPTIONAL 2. Checkpoints are not grading weights.
 
 | Requirement | Status | Evidence | Test Result | Remaining Action |
 | --- | --- | --- | --- | --- |
@@ -21,7 +21,7 @@ Counts: PASS 77; FAIL 0; MISSING 2; NOT TESTED 4; REMOTE CHECK 7; OPTIONAL 2. Ch
 | 1.1 Starter behavior and sample-data documentation | PASS | docs/part1-project-start.md; git show main:todo_app/src/todoApp.ts | Starter has browser RAM and three examples; current browser tested | None |
 | 1.1 Local HUE1 based on main | PASS | git merge-base main HUE1; git log | main is unchanged starter ancestor; HUE1 now contains feature merges | None |
 | 1.1 Ignore generated output, secrets and personal IDE files | PASS | .gitignore; git ls-files | node_modules, .tools, .env, .idea, .vscode, compiled JS, Gradle output ignored; lockfile and Wrapper retained | None |
-| 1.2 Each member’s feature branch, own contribution and meaningful commits | MISSING | git log HUE1 --format=fuller | Karam-authorized commits exist. Mazen supplied identity and conditional authorization, but has not reviewed or approved an actual patch | Teammate reviews and authors a genuine contribution under their confirmed identity |
+| 1.2 Each member’s feature branch, reviewed contribution and meaningful commits | PASS | Karam feature commits; Mazen 78be29c on feature/hue1-teammate-review; docs/mazen-review-request.md | Mazen personally approved the exact assistant-prepared test/README patch; author and committer verified; merged as 07b5169 | No additional approval needed for this exact patch; independent implementation and joint conflict exercise are not inferred |
 | 1.2 README actual team names | PASS | README.md Team | Karam Samer Atallah Aldabain (confirmed Git identity); Mazen Mohammad Yousef Alayaideh (personally supplied identity) | None |
 | 1.2 README clone URL, purpose, prerequisites and startup | PASS | README.md; package.json | Working-tree commands build and run; publication caveat explicit | None |
 | 1.2 Reviewed contributions integrated without squash | PASS | 0296a12, 203bca5, c937733; merges 4fcd46d, 210c40d, 2b2068c | Approved work integrated without squash under confirmed Karam identity; teammate-specific requirement remains separate | None |
@@ -30,7 +30,7 @@ Counts: PASS 77; FAIL 0; MISSING 2; NOT TESTED 4; REMOTE CHECK 7; OPTIONAL 2. Ch
 | Authorized technical same-base conflict and two-parent resolution | PASS | docs/technical-conflict-evidence.md; resolution 889a6d3; final merge e3c8af0 | Actual Git CONFLICT and unmerged index captured; resolved without squash or rewrite | None for technical exercise |
 | 1.3 Intended changes present in HUE1 (also 2 and 3.2) | PASS | git ls-tree -r HUE1; feature merge commits | Frontend/backend, tests, documentation and Gradle Wrapper are versioned in HUE1; generated output absent from final tree | None |
 | 1.3 No unresolved conflict entries or markers | PASS | git ls-files -u; anchored rg scan | No index conflicts; no conflict markers in application, Java sources, docs or README | None |
-| 1.3 Fresh HUE1 clone starts complete solution from README | PASS | C:/Users/Magic Systems/Desktop/PI2/HUE1-final-verification-2026-11-13, cloned at 4ee3de1 | Clean clone install, builds, browser, Java and production HTTP checks pass; no application files copied | None |
+| 1.3 Fresh HUE1 clone starts complete solution from README | PASS | C:/Users/Magic Systems/Desktop/PI2/HUE1-approved-verification-2026-11-13, cloned at 07b5169 | Clean clone install, builds, browser, Java and production HTTP checks pass; no application files copied | None |
 | 1.3 All required deliverables included in versioned submission | PASS | git ls-tree -r HUE1; feature merge commits | Frontend/backend, tests, documentation and Gradle Wrapper are versioned in HUE1; generated output absent from final tree | None |
 | 2.1 Server authoritative RAM collection; no database | PASS | todo_api/src/store.ts TodoStore | Executed Node/Chrome/runtime checks pass; see command results below | None |
 | 2.1 Server-generated unique IDs, timestamps and initial offen | PASS | todo_api/src/store.ts TodoStore create | Executed Node/Chrome/runtime checks pass; see command results below | None |
@@ -104,77 +104,49 @@ Counts: PASS 77; FAIL 0; MISSING 2; NOT TESTED 4; REMOTE CHECK 7; OPTIONAL 2. Ch
 | 2.7 Hypermedia/HATEOAS | OPTIONAL | Assignment p9 | Explicitly excluded from mandatory grading | None |
 
 
-## Final automation results — 13 November 2026
 
-**Technical implementation complete and tested; full assignment NOT READY — ISSUES REMAIN.** All automatable implementation, test, local commit, integration and technical conflict work requested has completed. Only publication is left for transferring this local technical snapshot; publication alone does not establish the missing student participation, manual tool actions or external permissions.
+## Latest approval, integration and verification
 
-Verified pre-operation backup: `C:/Users/Magic Systems/Desktop/PI2/HUE1-backup-2026-11-13T11-34-29-613Z`, 326 copied files verified by SHA-256. BACKUP-MANIFEST.json records all included paths/hashes and regenerable exclusions. Source, tests, docs, Wrapper and Git metadata preserved. main is unchanged at `c6acd6e640ee80388ec231bc04b1f4bfaf8fd26c`.
+Mazen's exact response was: “I personally reviewed and approve this exact patch and attribution”. The assistant verified the reviewed diff SHA-256 `01dc42da64f7c48381beb6a2fe9dec2c5f4e9b575f209062fa53e2bac9282ca7` before staging. [Approval record](mazen-review-request.md) and [exact reviewed patch](approved-mazen-review.patch) preserve the scope. Commit 78be29ca1bc74ecbddbd0044f7684b9d4966640a on feature/hue1-teammate-review has Mazen's personally confirmed author AND committer name/email. Its body explicitly states assistant preparation and personal review/approval. HUE1 merge: 07b5169e6a57f361a608f98eb72c4da3dfd2527c. Both students now have identifiable, authorized reviewed commits. This does not claim Mazen independently wrote the patch or participated in the earlier conflict resolution.
 
-### Files changed in this final automation
+Confirmed README roster: Karam Samer Atallah Aldabain (ksaa11) and Mazen Mohammad Yousef Alayaideh (mmya68). The username update is b607ee7, merged as 074202a. Karam's repository-local identity remains configured; Mazen's identity was supplied per-command for his approved commit only. No authentication or remote permission is inferred from an author email or username.
 
-- tests/api.test.mjs: HTTP date-boundary test using fixture(t), accepted 2000 leap day/valid month ends, rejected 2100 leap day/April 31, atomic POST/PATCH rejection and subsequent successful update.
-- README.md: accurate date-validation/test explanation and Mazen's personally confirmed name; no claim that he reviewed the added patch.
-- docs/projektprofil.md: resolved first project-goal line; all other profile content preserved.
-- docs/technical-conflict-evidence.md: actual hashes, lines, merge output, unmerged index entries and resolution rationale; explicitly single-author automation.
-- docs/final-local-audit.md: current matrix/results; docs/final-local-audit-before-final-automation.md preserves earlier report.
-- docs/part1-live-teamwork.md and docs/hue1-integration-handoff.md: preparation status marked superseded by current results.
-- docs/evidence/http-file-results.txt and docs/evidence/part2-network.json: refreshed from the actual fresh-clone run.
-- Local-only verification scripts/results are under ignored .tools; dependencies/build output are not versioned in the final tree.
+Safety backup before approved attribution: `C:/Users/Magic Systems/Desktop/PI2/HUE1-backup-2026-11-13T11-42-04-113Z`, 399 copied files verified by SHA-256, including the exact review patch and Git metadata. Earlier backup before this round: `C:/Users/Magic Systems/Desktop/PI2/HUE1-backup-2026-11-13T11-40-05-370Z`, 382 files verified. Regenerable dependencies/build caches excluded; no source or user work discarded. The separate linked worktree `C:/Users/Magic Systems/Desktop/PI2/HUE1-mazen-review` retains feature/hue1-teammate-review and is clean; it is not a nested submitted repository.
 
-No production source change was needed. Tests and business rules were not weakened. All new commits use Karam's confirmed identity; no commit is attributed to Mazen. Original main and existing history are preserved.
+## Latest fresh-clone verification
 
-### Actual commits and merges in this final automation
+Fresh directory: `C:/Users/Magic Systems/Desktop/PI2/HUE1-approved-verification-2026-11-13`, cloned directly from local HUE1 at 07b5169 using --no-hardlinks --branch HUE1. No untracked application file copied. Installed JDK 25, Node/Chrome and existing dependency caches supply documented prerequisites; offline checks do not certify network downloads.
 
-| Commit | Branch / action |
+| Executed command/check | Actual result |
 | --- | --- |
-| a7e3cee | feature/hue1-final-validation: date tests and README explanation |
-| fb67062 | HUE1 merge of final-validation |
-| 81f1c1e | feature/hue1-technical-conflict-a: first authorized project-goal edit |
-| 75ad616 | feature/hue1-technical-conflict-b: second authorized project-goal edit |
-| 3e86c45 | HUE1 merge of first technical perspective |
-| 889a6d3 | Actual two-parent resolution on technical-conflict-b after Git reports CONFLICT |
-| e3c8af0 | HUE1 merge of resolved technical exercise |
-| 16f3a2f | feature/hue1-final-evidence: actual conflict evidence |
-| 4ee3de1 | HUE1 merge of actual evidence; clean-clone tested snapshot |
-
-Final report/evidence updates are committed on feature/hue1-final-evidence and merged into HUE1 afterward; their resulting hashes are shown by the final git log. All feature pointers retained, including unused teammate/independent-student exercise branches; pointers alone are not contribution evidence. Earlier integration history includes one corrected generated-output staging mistake (6d19cd3, corrected by 203bca5); final tree excludes it and history was not rewritten.
-
-### Real conflict verification
-
-[Actual evidence](technical-conflict-evidence.md) records common base fb6706217ad7d420e186dd68c60865fd92a3234f, both independent branch tips, competing literal project-goal lines, Git's actual content-conflict output, and all three unmerged index stages. Resolution 889a6d3 has parents 75ad616c9589dc6d44d209b5239fd9e49e75b8ec and 3e86c455452e51a6ba7676cc9a899829a8b7c028. The resolution preserves usability and the independent Express/Vert.x architecture. It was executed by the assistant under Karam authorization, not a jointly reviewed student decision. The technical exercise passes; the academic two-student checkpoint remains MISSING.
-
-### Fresh-clone checks
-
-Fresh path: `C:/Users/Magic Systems/Desktop/PI2/HUE1-final-verification-2026-11-13`. Created using `git clone --no-hardlinks --branch HUE1 . ..\HUE1-final-verification-2026-11-13`; no untracked application files copied. Installed runtimes/browser and existing dependency caches supply the documented prerequisites. Offline success does not establish first-use internet downloads.
-
-| Executed in fresh clone | Result |
-| --- | --- |
-| npm.cmd ci --offline | 82 packages installed; exit 0; cached dependency install |
+| npm.cmd ci --offline | 82 packages installed successfully |
 | npm.cmd run typecheck | Frontend/backend pass |
-| npm.cmd test | Production build and 8 Node test groups pass, 0 failures |
-| npm.cmd run test:browser | 3 Chrome cases pass in 18.9s; CRUD, refresh, second window, error display, stopped-server and CDP traffic |
-| npm.cmd run build | Final frontend/backend production compilation passes |
-| echo-service: .\gradlew.bat clean build installDist --offline --no-daemon --console=plain | BUILD SUCCESSFUL in 20s; 5 Java tests pass, 0 failures |
-| Production Express and Vert.x startup | Both real clean-built entry points start independently/together on 3000/8888 |
-| node tests/run-http-files.mjs with both alive | 27 To-do plus 5 Echo/User requests pass; all 32 response handlers pass |
-| Static delivery | /, compiled JS modules and Bootstrap CSS return 200 |
+| npm.cmd test | Production frontend/backend build and 9 Node groups pass, 0 failed |
+| npm.cmd run test:browser | 3 Chrome scenarios pass in 18.6s |
+| echo-service: .\gradlew.bat clean build installDist --offline --no-daemon --console=plain | BUILD SUCCESSFUL in 19s; 5 Java tests pass |
+| Both actual compiled production servers | Express 3000 and Vert.x 8888 run from the clean clone; static HTML/JS/CSS return 200 |
+| node tests/run-http-files.mjs | 27 To-do and 5 Echo/User requests pass; real response assertions |
 
-Total named automated tests: **16 passed (8 Node + 3 Chrome + 5 Java), 0 failed**. The 32 live HTTP requests are additional executed checks, not added again as named test cases. [Saved HTTP output](evidence/http-file-results.txt) and [saved browser/CDP capture](evidence/part2-network.json) come from this clone. Runtime verification harness remained outside the clone, supplied no application code and stopped both spawned production servers in finally. Gradle used documented JDK 25, explicit JAVA_HOME/PATH and existing GRADLE_USER_HOME cache; approved execution was required for cache access.
+Total: **17 named automated tests passed, 0 failed**, plus **32 live HTTP requests passed**. The new PUT test supplements existing POST/PATCH century/leap-day/month-end coverage: invalid full PUT preserves every existing field, then valid PUT succeeds with immutable ID/creation time. Production source did not need changes. The original HTTP runner tests remain executed, not weakened. Browser tests verify CRUD, refresh, second window, stopped-server errors and real CDP methods/payload/status/content. Java tests verify Echo/User success/error/recovery and password omission.
 
-Final documentation-only merges can be brought into the verification clone by fetching from the local filesystem origin and fast-forwarding; no GitLab fetch/push is involved. Relevant Node checks are repeated after the final documentation/evidence update; the tested application source remains identical.
+[HTTP stdout](evidence/http-file-results.txt) and [browser Network capture](evidence/part2-network.json) are refreshed from this integrated clone. An external verification harness launched only the clone's versioned/compiled entry points and stopped both production servers in finally. Gradle used the documented JDK and an existing cache with approved execution for cache access. No application files were imported from an untracked working tree.
 
-### What cannot be credited as executed
+## Actual technical conflict and remaining requirements
 
-- WebStorm/ijhttp not found on PATH or checked application locations. IntelliJ IDEA exists, but that does not establish actual execution in WebStorm. NOT TESTED: start Express, open tests/todo-api.http in WebStorm, run all requests in order, inspect assertions. The actual file passes through the Node compatibility runner.
-- Manual browser DevTools panel interaction is NOT TESTED. Chrome automation and CDP capture verify methods, URLs, headers, JSON payloads, statuses and bodies. To complete the exact manual requirement: open the page, DevTools Network, enable Preserve log, perform create/edit/status/delete, inspect Headers/Payload/Response, then verify error handling. Available tools do not supply desktop interaction for that panel.
-- Each student's oral understanding and historical official-starter generation/IDE-import steps are not established by current source/tests.
-- Mazen personally supplied his identity and conditional permission only for patches he reviewed/approved. This new automatically implemented patch has not received his actual review. Neither his email nor a branch pointer is evidence of a contribution. Genuine personal review and independent teamwork remain required.
+The [real technical conflict evidence](technical-conflict-evidence.md) remains valid: common base fb67062, edits 81f1c1e/75ad616, actual Git CONFLICT, two-parent resolution 889a6d3 and final HUE1 merge e3c8af0. Those edits/resolution were automated under Karam's authorization, not Mazen's independent conflict contribution. Therefore that academic checkpoint remains MISSING even though the technical exercise is complete. The new approval is limited to the exact date-test/README patch, and does not retroactively approve or reattribute older commits.
 
-### Publication and Moodle — commands prepared only
+Remaining checks:
 
-No git push (including dry-run), remote Merge Request, GitLab modification or Moodle submission was executed. The configured remote is https://git.thm.de/pi2-ws2627-fr3f/todoapp-client.git; privacy, fork provenance, both students' authentication/push rights, tutor access, published HUE1 state and Moodle deadline still require external verification. If using optional Merge Requests, verify their feature/access as well.
+- Independently performed two-student conflict contributions and jointly understood/agreed resolution are not established by the single-author automation. No additional commit attribution or participation is invented.
+- WebStorm HTTP-client execution and manual DevTools panel interaction remain NOT TESTED; available Node/Chrome/CDP equivalents pass. For WebStorm: start Express, open tests/todo-api.http, Run All Requests, inspect assertions. For DevTools: open Network with Preserve log, perform CRUD/errors and inspect Headers/Payload/Response. These exact UI actions require unavailable desktop/IDE interaction; no claim they were performed.
+- Historical official-starter/IDE import and each student's oral explanation remain unverified.
+- Seven remote checkpoints remain: group/fork provenance, private visibility, members' push permissions, tutor access, per-member clone/SSH/authentication, published/fetched HUE1, Moodle URL/deadline. Optional Merge Request feature/access is checked only if used.
 
-After all missing academic/manual checks are addressed and the user chooses to publish, the user can execute these exact named-ref commands:
+Counts are now **PASS 78; FAIL 0; MISSING 1; NOT TESTED 4; REMOTE CHECK 7; OPTIONAL 2**. The approved contribution moved its row to PASS; the technical conflict checkpoint remains separately PASS, without substituting for the missing joint exercise. [Previous audit](final-local-audit-before-mazen-approval.md) preserves earlier pending states and superseded test counts.
+
+## Publication commands — prepared, never executed here
+
+The local technical solution is complete and committed; main stays exactly c6acd6e640ee80388ec231bc04b1f4bfaf8fd26c. No git push, remote Merge Request, GitLab change or Moodle submission occurred. After remaining academic/manual/external checks and when the user chooses to publish:
 
 ```powershell
 cd 'C:\Users\Magic Systems\Desktop\PI2\todoapp-client'
@@ -185,12 +157,12 @@ git remote get-url origin
 git push -u origin HUE1:refs/heads/HUE1
 ```
 
-If feature branches must also be published as exercise evidence, publish explicitly named branches under the appropriate student's account; do not use --all, --mirror, --force or any main refspec. A future genuine teammate exercise needs that student's actual reviewed branch and account, not the single-author technical branch as a substitute.
+To publish Mazen's approved contribution branch as well, use Mazen's own authenticated account and an explicit branch ref:
 
-Prepared Moodle branch URL: https://git.thm.de/pi2-ws2627-fr3f/todoapp-client/-/tree/HUE1 . Verify the published content and access before submission. No assertion is made that the current remote already contains this local work.
+```powershell
+git push -u origin feature/hue1-teammate-review:refs/heads/feature/hue1-teammate-review
+```
 
-### Explicit final verdict
+Use explicit named refs for any additional required feature evidence. Never use --all, --mirror, --force or a main refspec. Author identity is not GitLab authentication. Prepared Moodle branch URL: https://git.thm.de/pi2-ws2627-fr3f/todoapp-client/-/tree/HUE1 . Verify actual published content/privacy/tutor access and the deadline before authorized submission.
 
-Parts 2 and 3 are implemented, versioned, built, and runtime/browser tested from a fresh clone. Required files and all twelve mandatory HTTP scenarios are present. No unresolved functional defect was reproduced. Part 1 local Git integration and the authorized technical conflict exercise are complete; independent teammate contribution and joint academic participation remain unproven. Manual tool actions and seven remote checkpoints remain open. main is unchanged, all authorized work is committed to HUE1, and no remote publication occurred.
-
-**NOT READY — ISSUES REMAIN** for full university compliance. The local technical snapshot is complete and tested, but “only push remains” would omit genuine participation and unexecuted manual/external checks.
+**Final verdict: technical implementation complete and tested; NOT READY — ISSUES REMAIN for full academic compliance.** No further approval is needed for commit 78be29c; remaining personal participation and external/manual checks cannot be credited automatically. Final report-only commits are on feature/hue1-team-identity and merged to HUE1; the resulting exact hashes are visible in the final Git log.
