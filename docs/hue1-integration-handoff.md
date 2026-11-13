@@ -1,3 +1,5 @@
+> Historical/preparation record: local integration and fresh-clone verification have since completed. See [current audit](final-local-audit.md). Team/conflict and remote requirements remain open.
+
 ﻿# HUE1 integration handoff — 13 November 2026
 
 This is a preparation record, not evidence that either student authored existing code. Two students worked on the same laptop. Each student must review and approve their actual changes and use their own confirmed Git name/email and account authentication. Do not infer authorship from the division below.

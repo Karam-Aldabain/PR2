@@ -1,3 +1,5 @@
+> Historical/preparation record: local integration and fresh-clone verification have since completed. See [current audit](final-local-audit.md). Team/conflict and remote requirements remain open.
+
 # Part 2 requirement audit
 
 > Historical implementation report. For the subsequent combined audit, URL-error fix, current test counts and outstanding submission checkpoints, see [Part 2 and Part 3 audit](part2-part3-audit.md).

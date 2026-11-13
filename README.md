@@ -77,7 +77,7 @@ Browserablauf und Tutorfragen: [Demonstrationsanleitung](docs/part2-demo-guide.m
 - Fehlendes JavaScript oder Modul: npm.cmd ci und npm.cmd run build ausführen.
 - Daten nach Neustart leer: erwartete RAM-Speicherung. Zum Testen erneut Todos anlegen.
 - Browser-Test startet nicht: Google Chrome installieren; die Playwright-Konfiguration verwendet channel: chrome.
-- HUE1 fehlt im frischen Clone oder enthält nur den Starter: Der aktuelle lokale HUE1-Zeiger veröffentlicht keine uncommitteten Änderungen. Das Team muss die geprüfte Lösung erst nach HUE1 übernehmen und pushen; der Clone-Befehl setzt diesen veröffentlichten Stand voraus.
+- HUE1 fehlt im Remote-Clone oder enthält nur den Starter: Die geprüfte Lösung ist lokal integriert. Ein Remote-Clone benötigt die ausdrücklich freigegebene Veröffentlichung von HUE1; bislang wurde nichts gepusht.
 
 ## Teil 1
 
@@ -85,7 +85,7 @@ Teil 1 behandelt Git und Projektstart gemäß HÜ1.pdf 1.1–1.3. Es ist kein zu
 
 Der [Projektstart und Ausgangsstand](docs/part1-project-start.md) dokumentiert den tatsächlich geprüften Starter mit drei Beispieltodos und den Übergang zur heutigen Anwendung. [docs/projektprofil.md](docs/projektprofil.md) enthält das geforderte gemeinsame Projektprofil. Der [Team- und Konfliktablauf](docs/part1-team-workflow.md) beschreibt die noch durchzuführenden echten Beiträge, den Merge-Konflikt und die HUE1-Abgabe. Der [Teil-1-Erfüllungsbericht](docs/part1-completion-report.md) trennt erledigte lokale Arbeit von offenen Team-/GitLab-Schritten.
 
-Der lokale HUE1-Ausgangspunkt ist angelegt. Reale Teamnamen, Beiträge jedes Mitglieds, Commit-/Merge-Historie, veröffentlichter HUE1-Stand, SSH-Nachweis und GitLab-Zugriffsrechte sind noch nicht vollständig belegt. Die Anleitung ist kein Ersatz für deren tatsächliche Durchführung. Abschnitt 1.4 (Fruit-API) ist freiwillig und wurde nicht zusätzlich implementiert. Die optionale Aufgabe 2.7 ist ebenfalls nicht Bestandteil dieser Umsetzung. Teil 3 wird im folgenden Abschnitt beschrieben.
+Der vollständige technische Stand ist lokal in HUE1 integriert und aus einem frischen lokalen Clone geprüft. main bleibt unverändert. Beide Teamnamen sind eingetragen; die tatsächliche Beteiligung des zweiten Mitglieds, der echte Konflikt samt Lösung und Remote-Zugriffs-/Veröffentlichungsnachweise stehen noch aus. Die Anleitung ersetzt deren Durchführung nicht. Abschnitt 1.4 (Fruit-API) und 2.7 (Hypermedia) sind freiwillig und nicht zusätzlich umgesetzt.
 
 ## Part 3 — Vert.x Echo Service
 
@@ -133,7 +133,7 @@ $env:GRADLE_USER_HOME = Join-Path (Resolve-Path ..\.tools) 'gradle-home'
 .\gradlew.bat run
 ```
 
-See [Part 3 demonstration guide](docs/part3-demo-guide.md) and [Part 3 verification report](docs/part3-compliance.md). Work remains on the current feature branch; the team must review and integrate into `HUE1` before submission. No automatic commit, push or merge is performed.
+See [Part 3 demonstration guide](docs/part3-demo-guide.md) and [Part 3 verification report](docs/part3-compliance.md). The reviewed solution is integrated locally into `HUE1` with preserved feature merges; `main` is unchanged. Publication and Moodle submission require explicit approval.
 
 ## Combined review
 
