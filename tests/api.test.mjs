@@ -156,3 +156,21 @@ test('Gregorian century and month-end dates validate over HTTP without partial w
   assert.deepEqual(recovered.data, { ...original, dueDate: '2027-04-30' });
   assert.deepEqual((await request(url)).data, recovered.data);
 });
+
+test('PUT calendar-date rejection preserves the complete existing resource', async t => {
+  const request = await fixture(t);
+  const original = (await request(undefined, 'POST', { ...valid, dueDate: '2000-02-29' })).data;
+  const url = `/api/todos/${original.id}`;
+  const replacement = { title: 'Replacement', description: 'Full update', priority: 'niedrig', status: 'in Bearbeitung' };
+  for (const dueDate of ['2100-02-29', '2027-04-31']) {
+    const rejected = await request(url, 'PUT', { ...replacement, dueDate });
+    assert.equal(rejected.status, 400, dueDate);
+    assert.equal(typeof rejected.data.error, 'string');
+    assert.deepEqual((await request(url)).data, original, 'Invalid PUT changes no field');
+    assert.deepEqual((await request()).data, [original], 'Collection remains available and unchanged');
+  }
+  const accepted = await request(url, 'PUT', { ...replacement, dueDate: '2027-04-30' });
+  assert.equal(accepted.status, 200);
+  assert.deepEqual(accepted.data, { ...replacement, dueDate: '2027-04-30', id: original.id, createdAt: original.createdAt });
+  assert.deepEqual((await request(url)).data, accepted.data);
+});
