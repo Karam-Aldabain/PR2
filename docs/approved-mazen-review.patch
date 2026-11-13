@@ -1,0 +1,38 @@
+diff --git a/README.md b/README.md
+index ac851cd..e3139fc 100644
+--- a/README.md
++++ b/README.md
+@@ -146,3 +146,7 @@ The latest [Part 2 and Part 3 audit](docs/part2-part3-audit.md) records the veri
+ `dueDate` verwendet ein echtes Kalenderdatum im Format `YYYY-MM-DD`. Der Server prüft das Datum in UTC und vergleicht es mit der ursprünglichen Eingabe; dadurch wird beispielsweise ein automatisch auf März verschobener 29. Februar zurückgewiesen. Das Jahr 2000 ist ein Schaltjahr, 2100 dagegen nicht: Jahrhundertjahre müssen durch 400 teilbar sein. Der 30. April und der 31. Januar sind gültig, der 31. April ist ungültig.
+ 
+ `npm.cmd test` führt auch HTTP-Grenzfalltests für diese Daten aus. Ungültige POST-Anfragen legen nichts an; ein ungültiges PATCH verändert weder den Titel noch andere gespeicherte Felder. Eine nachfolgende gültige Änderung prüft, dass der Server weiterarbeitet. Die automatisierte Ergänzung wurde unter Karams bestätigter Identität autorisiert; sie wird nicht als Mazens persönlich geprüfter Beitrag ausgegeben.
++
++### Vollständiger Ersatz und ungültige Kalenderdaten
++
++Ein PUT muss alle bearbeitbaren Pflichtfelder enthalten. Auch wenn Titel, Beschreibung, Priorität und Status gültig sind, wird die gesamte Anfrage bei einem ungültigen Fälligkeitsdatum mit 400 abgewiesen: Kein Feld des vorhandenen Todos darf sich ändern. Der ergänzende HTTP-Test prüft diesen Fall und anschließend einen erfolgreichen PUT mit dem 30. April. ID und Erstellungszeitpunkt bleiben erhalten. Ausführen: `npm.cmd test`.
+diff --git a/tests/api.test.mjs b/tests/api.test.mjs
+index 45f9127..768a869 100644
+--- a/tests/api.test.mjs
++++ b/tests/api.test.mjs
+@@ -156,3 +156,21 @@ test('Gregorian century and month-end dates validate over HTTP without partial w
+   assert.deepEqual(recovered.data, { ...original, dueDate: '2027-04-30' });
+   assert.deepEqual((await request(url)).data, recovered.data);
+ });
++
++test('PUT calendar-date rejection preserves the complete existing resource', async t => {
++  const request = await fixture(t);
++  const original = (await request(undefined, 'POST', { ...valid, dueDate: '2000-02-29' })).data;
++  const url = `/api/todos/${original.id}`;
++  const replacement = { title: 'Replacement', description: 'Full update', priority: 'niedrig', status: 'in Bearbeitung' };
++  for (const dueDate of ['2100-02-29', '2027-04-31']) {
++    const rejected = await request(url, 'PUT', { ...replacement, dueDate });
++    assert.equal(rejected.status, 400, dueDate);
++    assert.equal(typeof rejected.data.error, 'string');
++    assert.deepEqual((await request(url)).data, original, 'Invalid PUT changes no field');
++    assert.deepEqual((await request()).data, [original], 'Collection remains available and unchanged');
++  }
++  const accepted = await request(url, 'PUT', { ...replacement, dueDate: '2027-04-30' });
++  assert.equal(accepted.status, 200);
++  assert.deepEqual(accepted.data, { ...replacement, dueDate: '2027-04-30', id: original.id, createdAt: original.createdAt });
++  assert.deepEqual((await request(url)).data, accepted.data);
++});

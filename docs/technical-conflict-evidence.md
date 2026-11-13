@@ -2,7 +2,7 @@
 
 Automated technical exercise authorized by Karam; all new commits authored/committed as Karam. No independently reviewed Mazen edit or joint student decision is claimed.
 
-This is a real Git content conflict, but it does not complete the independent two-student academic exercise. Mazen has supplied his identity and conditional authorization for personally reviewed work; he has not reviewed this patch or authored either edit. His participation remains pending.
+This is a real Git content conflict, but it does not complete the independent two-student academic exercise. Mazen has supplied his identity and conditional authorization for personally reviewed work; he has not reviewed this patch or authored either edit. His independent participation in this conflict remains pending. A later assistant-prepared date-test/README patch was personally approved by Mazen and committed separately as 78be29c; that approval does not reattribute this conflict.
 
 | Event | Actual commit / branch |
 | --- | --- |
