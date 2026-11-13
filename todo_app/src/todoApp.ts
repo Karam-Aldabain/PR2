@@ -1,88 +1,31 @@
-type TodoPriority = "hoch" | "mittel" | "niedrig";
-type TodoStatus = "offen" | "erledigt" | "in Bearbeitung";
+import { api, type Todo, type TodoPriority, type TodoStatus } from "./api.js";
 
-interface Todo {
-  id: string;
-  title: string;
-  description: string;
-  priority: TodoPriority;
-  status: TodoStatus;
-  createdAt: Date;
-  dueDate?: Date;
-}
-
-function formatDate(date?: Date): string {
+function formatDate(value?: string): string {
+  const date = value ? new Date(value.length === 10 ? `${value}T00:00:00` : value) : undefined;
   return date
     ? date.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })
     : "Ohne Fälligkeitsdatum";
 }
 
-class TodoItem implements Todo {
-  id: string;
-  createdAt: Date;
-  status: TodoStatus;
-  title: string;
-  description: string;
-  priority: TodoPriority;
-  dueDate?: Date;
-
-  constructor(title: string, description: string, priority: TodoPriority, dueDate?: Date) {
-    this.id = crypto.randomUUID();
-    this.createdAt = new Date();
-    this.status = "offen";
-    this.title = title;
-    this.description = description;
-    this.priority = priority;
-    this.dueDate = dueDate;
-  }
-}
-
 class TodoManager {
   private todos: Todo[] = [];
-
-  add(title: string, description: string, priority: TodoPriority, dueDate?: Date): Todo {
-    const todo = new TodoItem(title, description, priority, dueDate);
-    this.todos.push(todo);
-    return todo;
+  async load(): Promise<void> { this.todos = await api.all(); this.render(); }
+  async add(title: string, description: string, priority: TodoPriority, dueDate?: string): Promise<Todo> {
+    const todo = await api.create({ title, description, priority, ...(dueDate ? { dueDate } : {}) });
+    this.todos.push(todo); return todo;
   }
-
-  find(id: string): Todo | undefined {
-    for (const todo of this.todos) {
-      if (todo.id === id) {
-        return todo;
-      }
-    }
-    return undefined;
+  async find(id: string): Promise<Todo> { return api.get(id); }
+  async update(id: string, title: string, description: string, priority: TodoPriority, status: TodoStatus, dueDate?: string): Promise<void> {
+    const todo = await api.replace(id, { title, description, priority, status, ...(dueDate ? { dueDate } : {}) });
+    this.todos = this.todos.map(item => item.id === id ? todo : item);
   }
-
-  update(id: string, title: string, description: string, priority: TodoPriority,
-         status: TodoStatus, dueDate?: Date): void {
-    const todo = this.find(id);
-    if (todo) {
-      todo.title = title;
-      todo.description = description;
-      todo.priority = priority;
-      todo.status = status;
-      todo.dueDate = dueDate;
-    }
+  async remove(id: string): Promise<void> {
+    await api.remove(id); this.todos = this.todos.filter(todo => todo.id !== id);
   }
-
-  remove(id: string): void {
-    for (let i = 0; i < this.todos.length; i++) {
-      if (this.todos[i].id === id) {
-        this.todos.splice(i, 1);
-        return;
-      }
-    }
+  async setStatus(id: string, status: TodoStatus): Promise<void> {
+    const todo = await api.patch(id, { status });
+    this.todos = this.todos.map(item => item.id === id ? todo : item);
   }
-
-  setStatus(id: string, status: TodoStatus): void {
-    const todo = this.find(id);
-    if (todo) {
-      todo.status = status;
-    }
-  }
-
   private getStats(): string[] {
     let open = 0;
     let inProgress = 0;
@@ -147,11 +90,16 @@ class TodoManager {
       checkbox.className = "todo-checkbox form-check-input m-0";
       checkbox.setAttribute("aria-label", `${todo.title} als erledigt markieren`);
       checkbox.checked = todo.status === "erledigt";
-      checkbox.addEventListener("change", () => {
-        this.setStatus(todo.id, checkbox.checked ? "erledigt" : "offen");
-        this.render();
-        // Auch den Tastaturfokus nach dem Ersetzen der Checkbox wiederherstellen.
-        focusTodoButton(todo.id, ".todo-checkbox");
+      checkbox.addEventListener("change", async () => {
+        checkbox.disabled = true;
+        try {
+          clearError();
+          await this.setStatus(todo.id, checkbox.checked ? "erledigt" : "offen");
+          this.render();
+          // Auch den Tastaturfokus nach dem Ersetzen der Checkbox wiederherstellen.
+          focusTodoButton(todo.id, ".todo-checkbox");
+        } catch (error) { checkbox.checked = todo.status === "erledigt"; showError(error); }
+        finally { checkbox.disabled = false; }
       });
       row.appendChild(checkbox);
 
@@ -205,16 +153,21 @@ class TodoManager {
       editButton.type = "button";
       editButton.className = "btn btn-outline-primary btn-sm";
       editButton.textContent = "Bearbeiten";
-      editButton.addEventListener("click", () => startEditing(todo.id));
+      editButton.addEventListener("click", () => { void startEditing(todo.id); });
       const deleteButton = document.createElement("button");
       deleteButton.type = "button";
       deleteButton.className = "btn btn-outline-danger btn-sm";
       deleteButton.textContent = "Löschen";
-      deleteButton.addEventListener("click", () => {
-        this.remove(todo.id);
-        this.render();
-        // Nach dem Löschen verschwindet der auslösende Button.
-        newButton.focus();
+      deleteButton.addEventListener("click", async () => {
+        deleteButton.disabled = true;
+        try {
+          clearError();
+          await this.remove(todo.id);
+          this.render();
+          // Nach dem Löschen verschwindet der auslösende Button.
+          newButton.focus();
+        } catch (error) { showError(error); }
+        finally { deleteButton.disabled = false; }
       });
       actions.append(editButton, deleteButton);
       card.appendChild(actions);
@@ -265,30 +218,30 @@ function focusTodoButton(id: string, selector: string): void {
 function resetForm(): void {
   editingId = undefined;
   form.reset();
+  statusInput.disabled = true;
   formHeading.textContent = "Neues Todo";
   submitButton.textContent = "Todo hinzufügen";
   errorMsg.textContent = "";
   errorMsg.classList.add("d-none");
 }
 
-function startEditing(id: string): void {
-  const todo = manager.find(id);
-  if (!todo) return;
-  resetForm();
-  editingId = id;
-  titleInput.value = todo.title;
-  descriptionInput.value = todo.description;
-  priorityInput.value = todo.priority;
-  statusInput.value = todo.status;
-  // Lokales Kalenderdatum verwenden, ohne UTC-Verschiebung durch toISOString().
-  const date = todo.dueDate;
-  dueDateInput.value = date
-    ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
-    : "";
-  formHeading.textContent = "Todo bearbeiten";
-  submitButton.textContent = "Änderungen speichern";
-  dialog.showModal();
-  titleInput.focus();
+async function startEditing(id: string): Promise<void> {
+  try {
+    const todo = await manager.find(id);
+    if (!todo) return;
+    resetForm();
+    editingId = id;
+    titleInput.value = todo.title;
+    descriptionInput.value = todo.description;
+    priorityInput.value = todo.priority;
+    statusInput.value = todo.status;
+    dueDateInput.value = todo.dueDate ?? "";
+    statusInput.disabled = false;
+    formHeading.textContent = "Todo bearbeiten";
+    submitButton.textContent = "Änderungen speichern";
+    dialog.showModal();
+    titleInput.focus();
+  } catch (error) { showError(error); }
 }
 
 newButton.addEventListener("click", () => {
@@ -300,47 +253,50 @@ cancelButton.addEventListener("click", () => dialog.close());
 // Gilt sowohl für Abbrechen als auch für Escape und erfolgreiches Speichern.
 dialog.addEventListener("close", resetForm);
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const title = titleInput.value.trim();
   const description = descriptionInput.value.trim();
   const dueDateValue = dueDateInput.value;
-  const dueDate = dueDateValue ? new Date(`${dueDateValue}T00:00:00`) : undefined;
+  const dueDate = dueDateValue || undefined;
   const priority = priorityInput.value as TodoPriority;
   const status = statusInput.value as TodoStatus;
 
-  if (!title || !description || !dueDateInput.validity.valid || (dueDate && Number.isNaN(dueDate.getTime()))) {
+  if (!title || !description || !dueDateInput.validity.valid || (dueDate && Number.isNaN(Date.parse(dueDate)))) {
     errorMsg.textContent = "Bitte Titel und Beschreibung sowie ein gültiges Fälligkeitsdatum ausfüllen oder das Datum leer lassen.";
     errorMsg.classList.remove("d-none");
     return;
   }
 
-  if (editingId !== undefined) {
-    manager.update(editingId, title, description, priority, status, dueDate);
-  } else {
-    const todo = manager.add(title, description, priority, dueDate);
-    manager.setStatus(todo.id, status);
-  }
-  const savedId = editingId;
-  dialog.close();
-  manager.render();
-  // close() stellt den Fokus zunächst auf den alten Auslöser zurück.
-  // render() ersetzt diesen; deshalb den neuen Button gezielt fokussieren.
-  if (savedId !== undefined) {
-    focusTodoButton(savedId, "button");
-  } else {
-    newButton.focus();
-  }
+  submitButton.disabled = true;
+  cancelButton.disabled = true;
+  try {
+    if (editingId !== undefined) {
+      await manager.update(editingId, title, description, priority, status, dueDate);
+    } else {
+      await manager.add(title, description, priority, dueDate);
+    }
+    const savedId = editingId;
+    dialog.close();
+    manager.render();
+    // close() stellt den Fokus zunächst auf den alten Auslöser zurück.
+    // render() ersetzt diesen; deshalb den neuen Button gezielt fokussieren.
+    if (savedId !== undefined) {
+      focusTodoButton(savedId, "button");
+    } else {
+      newButton.focus();
+    }
+  } catch (error) { showError(error); }
+  finally { submitButton.disabled = false; cancelButton.disabled = false; }
 });
 
-// Beispieldaten demonstrieren alle Statuswerte sowie ein Todo ohne Termin.
-const tomorrow = new Date();
-tomorrow.setHours(0, 0, 0, 0);
-tomorrow.setDate(tomorrow.getDate() + 1);
-manager.add("Hausübung vorbereiten", "Aufgabenstellung lesen und offene Fragen notieren.", "hoch", tomorrow);
-const exampleInProgress = manager.add("TypeScript wiederholen", "Interfaces, Klassen und DOM-Ereignisse anhand der Todo-App nachvollziehen.", "mittel");
-manager.setStatus(exampleInProgress.id, "in Bearbeitung");
-const exampleDone = manager.add("Projekt starten", "Abhängigkeiten installieren, TypeScript kompilieren und die Anwendung öffnen.", "niedrig");
-manager.setStatus(exampleDone.id, "erledigt");
-
-manager.render();
+// This is only a display cache; the server owns all domain changes.
+function clearError(): void { errorMsg.textContent = ""; errorMsg.classList.add("d-none"); }
+function showError(error: unknown): void {
+  errorMsg.textContent = error instanceof Error ? error.message : "Die Anfrage ist fehlgeschlagen.";
+  errorMsg.classList.remove("d-none");
+  if (!dialog.open) { dialog.showModal(); }
+}
+dialog.addEventListener("cancel", event => { if (submitButton.disabled) event.preventDefault(); });
+statusInput.disabled = true;
+void manager.load().catch(showError);

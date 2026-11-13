@@ -1,4 +1,19 @@
 node_modules/
 .idea/
+.vscode/
 .DS_Store
 todo_app/public/js/
+
+todo_api/dist/
+test-results/
+playwright-report/
+.env
+.env.*
+!.env.example
+
+# Local verification tools and Gradle-generated output (keep the wrapper).
+.tools/
+echo-service/.gradle/
+echo-service/build/
+*.iml
+*.class

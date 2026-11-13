@@ -1,0 +1,383 @@
+# WebStorm HTTP Client: Run All Requests in order with npm start running.
+# POST saves todoId and original; subsequent handlers save the expected state.
+# A new run creates a fresh ID and deletes that resource at the end.
+@baseUrl = http://localhost:3000
+
+### Collection → expected 200
+GET {{baseUrl}}/api/todos
+
+> {%
+  client.test("Collection", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(Array.isArray(response.body), "Array");
+  });
+%}
+
+### Create → expected 201
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{
+  "title": "HTTP Test",
+  "description": "REST prüfen",
+  "priority": "hoch",
+  "dueDate": "2027-12-31"
+}
+
+> {%
+  client.test("Create", function () {
+    client.assert(response.status === 201, "Expected 201");
+    client.assert(!!response.body.id, "Generated ID");
+    client.assert(response.headers.valueOf("Location") === "/api/todos/" + response.body.id, "Location");
+    client.assert(response.body.status === "offen", "Initial status");
+    client.global.set("todoId", response.body.id);
+    client.global.set("original", JSON.stringify(response.body));
+  });
+%}
+
+### Read created → expected 200
+GET {{baseUrl}}/api/todos/{{todoId}}
+
+> {%
+  client.test("Read created", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(JSON.stringify(response.body) === client.global.get("original"), "Created state");
+  });
+%}
+
+### Replace → expected 200
+PUT {{baseUrl}}/api/todos/{{todoId}}
+Content-Type: application/json
+
+{
+  "title": "PUT",
+  "description": "REST prüfen",
+  "priority": "hoch",
+  "dueDate": "2027-12-31",
+  "status": "in Bearbeitung"
+}
+
+> {%
+  client.test("Replace", function () {
+    client.assert(response.status === 200, "Expected 200");
+    const original = JSON.parse(client.global.get("original"));
+    client.assert(response.body.id === original.id && response.body.createdAt === original.createdAt, "Immutable fields");
+    client.assert(response.body.title === "PUT", "Replaced title");
+    client.global.set("expected", JSON.stringify(response.body));
+  });
+%}
+
+### Verify PUT → expected 200
+GET {{baseUrl}}/api/todos/{{todoId}}
+
+> {%
+  client.test("Verify PUT", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(JSON.stringify(response.body) === client.global.get("expected"), "Unchanged expected state");
+  });
+%}
+
+### Status only → expected 200
+PATCH {{baseUrl}}/api/todos/{{todoId}}
+Content-Type: application/json
+
+{
+  "status": "erledigt"
+}
+
+> {%
+  client.test("Status only", function () {
+    client.assert(response.status === 200, "Expected 200");
+    const expected = JSON.parse(client.global.get("expected")); expected.status = "erledigt";
+    client.assert(JSON.stringify(response.body) === JSON.stringify(expected), "Only status changes");
+    client.global.set("expected", JSON.stringify(response.body));
+  });
+%}
+
+### Verify PATCH → expected 200
+GET {{baseUrl}}/api/todos/{{todoId}}
+
+> {%
+  client.test("Verify PATCH", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(JSON.stringify(response.body) === client.global.get("expected"), "Unchanged expected state");
+  });
+%}
+
+### Remove due date → expected 200
+PATCH {{baseUrl}}/api/todos/{{todoId}}
+Content-Type: application/json
+
+{
+  "dueDate": null
+}
+
+> {%
+  client.test("Remove due date", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(response.body.dueDate === undefined, "Date removed");
+    client.global.set("expected", JSON.stringify(response.body));
+  });
+%}
+
+### Missing GET → expected 404
+GET {{baseUrl}}/api/todos/nonexistent
+
+> {%
+  client.test("Missing GET", function () {
+    client.assert(response.status === 404, "Expected 404");
+
+  });
+%}
+
+### Missing PUT → expected 404
+PUT {{baseUrl}}/api/todos/nonexistent
+Content-Type: application/json
+
+{
+  "title": "HTTP Test",
+  "description": "REST prüfen",
+  "priority": "hoch",
+  "dueDate": "2027-12-31",
+  "status": "offen"
+}
+
+> {%
+  client.test("Missing PUT", function () {
+    client.assert(response.status === 404, "Expected 404");
+
+  });
+%}
+
+### Missing PATCH → expected 404
+PATCH {{baseUrl}}/api/todos/nonexistent
+Content-Type: application/json
+
+{
+  "status": "offen"
+}
+
+> {%
+  client.test("Missing PATCH", function () {
+    client.assert(response.status === 404, "Expected 404");
+
+  });
+%}
+
+### Missing DELETE → expected 404
+DELETE {{baseUrl}}/api/todos/nonexistent
+
+> {%
+  client.test("Missing DELETE", function () {
+    client.assert(response.status === 404, "Expected 404");
+
+  });
+%}
+
+### Missing fields → expected 400
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{}
+
+> {%
+  client.test("Missing fields", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Invalid title → expected 400
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{
+  "title": " ",
+  "description": "REST prüfen",
+  "priority": "hoch",
+  "dueDate": "2027-12-31"
+}
+
+> {%
+  client.test("Invalid title", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Invalid priority → expected 400
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{
+  "title": "HTTP Test",
+  "description": "REST prüfen",
+  "priority": "bad",
+  "dueDate": "2027-12-31"
+}
+
+> {%
+  client.test("Invalid priority", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Invalid date → expected 400
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{
+  "title": "HTTP Test",
+  "description": "REST prüfen",
+  "priority": "hoch",
+  "dueDate": "2027-02-29"
+}
+
+> {%
+  client.test("Invalid date", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Server fields → expected 400
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{
+  "title": "HTTP Test",
+  "description": "REST prüfen",
+  "priority": "hoch",
+  "dueDate": "2027-12-31",
+  "id": "client"
+}
+
+> {%
+  client.test("Server fields", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Invalid PUT → expected 400
+PUT {{baseUrl}}/api/todos/{{todoId}}
+Content-Type: application/json
+
+{
+  "title": "Must not change",
+  "description": "REST prüfen",
+  "priority": "hoch",
+  "dueDate": "2027-12-31",
+  "status": "bad"
+}
+
+> {%
+  client.test("Invalid PUT", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Unchanged after PUT → expected 200
+GET {{baseUrl}}/api/todos/{{todoId}}
+
+> {%
+  client.test("Unchanged after PUT", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(JSON.stringify(response.body) === client.global.get("expected"), "Unchanged expected state");
+  });
+%}
+
+### Invalid PATCH → expected 400
+PATCH {{baseUrl}}/api/todos/{{todoId}}
+Content-Type: application/json
+
+{
+  "title": "Must not change",
+  "priority": "bad"
+}
+
+> {%
+  client.test("Invalid PATCH", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Unchanged after PATCH → expected 200
+GET {{baseUrl}}/api/todos/{{todoId}}
+
+> {%
+  client.test("Unchanged after PATCH", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(JSON.stringify(response.body) === client.global.get("expected"), "Unchanged expected state");
+  });
+%}
+
+### Empty PATCH → expected 400
+PATCH {{baseUrl}}/api/todos/{{todoId}}
+Content-Type: application/json
+
+{}
+
+> {%
+  client.test("Empty PATCH", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Malformed JSON → expected 400
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{"title":
+
+> {%
+  client.test("Malformed JSON", function () {
+    client.assert(response.status === 400, "Expected 400");
+
+  });
+%}
+
+### Unknown API → expected 404
+GET {{baseUrl}}/api/unknown
+
+> {%
+  client.test("Unknown API", function () {
+    client.assert(response.status === 404, "Expected 404");
+    client.assert(typeof response.body.error === "string", "JSON error");
+  });
+%}
+
+### Healthy after errors → expected 200
+GET {{baseUrl}}/api/todos
+
+> {%
+  client.test("Healthy after errors", function () {
+    client.assert(response.status === 200, "Expected 200");
+
+  });
+%}
+
+### Delete → expected 204
+DELETE {{baseUrl}}/api/todos/{{todoId}}
+
+> {%
+  client.test("Delete", function () {
+    client.assert(response.status === 204, "Expected 204");
+    client.assert(!response.body, "No body");
+  });
+%}
+
+### Deleted resource → expected 404
+GET {{baseUrl}}/api/todos/{{todoId}}
+
+> {%
+  client.test("Deleted resource", function () {
+    client.assert(response.status === 404, "Expected 404");
+
+  });
+%}
+
