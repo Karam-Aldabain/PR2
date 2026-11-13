@@ -1,12 +1,27 @@
 {
   "dependencies": {
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "express": "^5.3.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
     "typescript": "^6.0.0"
   },
   "scripts": {
-    "build": "tsc -p todo_app/tsconfig.json",
-    "watch": "tsc -p todo_app/tsconfig.json --watch"
+    "build": "tsc -p todo_app/tsconfig.json && tsc -p todo_api/tsconfig.json",
+    "typecheck": "tsc -p todo_app/tsconfig.json --noEmit && tsc -p todo_api/tsconfig.json --noEmit",
+    "start": "node todo_api/dist/server.js",
+    "watch": "tsc -p todo_app/tsconfig.json --watch",
+    "test": "npm run build && node --test tests/api.test.mjs tests/http-file.test.mjs",
+    "test:http": "node tests/run-http-files.mjs",
+    "test:browser": "npm run build && playwright test"
+  },
+  "name": "todoapp-client",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
   }
 }
