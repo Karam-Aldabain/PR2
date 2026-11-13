@@ -4,8 +4,8 @@ TypeScript-To-do-Anwendung mit der bestehenden Bootstrap-Oberfläche und einer E
 
 ## Team
 
-- Karam Samer Atallah Aldabain
-- Mazen Mohammad Yousef Alayaideh
+- Karam Samer Atallah Aldabain — GitLab: `ksaa11`
+- Mazen Mohammad Yousef Alayaideh — GitLab: `mmya68`
 
 ## Installation und Start (Windows / VS Code)
 
