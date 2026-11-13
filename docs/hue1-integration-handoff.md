@@ -1,3 +1,5 @@
+> Superseded preparation status: date tests and the authorized single-author technical conflict exercise are complete. See [current audit](final-local-audit.md) and [actual conflict evidence](technical-conflict-evidence.md). Genuine independent teammate participation remains pending.
+
 > Historical/preparation record: local integration and fresh-clone verification have since completed. See [current audit](final-local-audit.md). Team/conflict and remote requirements remain open.
 
 ﻿# HUE1 integration handoff — 13 November 2026
