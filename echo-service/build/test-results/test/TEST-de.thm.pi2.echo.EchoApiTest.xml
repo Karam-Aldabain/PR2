@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="de.thm.pi2.echo.EchoApiTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-13T10:59:41.758Z" hostname="DESKTOP-OBCS1EI" time="1.045">
+  <properties/>
+  <testcase name="malformedOrIncompleteRequestsAreSafeAndServerKeepsRunning()" classname="de.thm.pi2.echo.EchoApiTest" time="0.913"/>
+  <testcase name="echoesQueryAsPlainText()" classname="de.thm.pi2.echo.EchoApiTest" time="0.023"/>
+  <testcase name="rejectsMissingMessageExactlyAsInLecture()" classname="de.thm.pi2.echo.EchoApiTest" time="0.01"/>
+  <testcase name="rejectsTrailingContentAfterUserJson()" classname="de.thm.pi2.echo.EchoApiTest" time="0.041"/>
+  <testcase name="userResponseHasUuidAndEmailWithoutPassword()" classname="de.thm.pi2.echo.EchoApiTest" time="0.044"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
