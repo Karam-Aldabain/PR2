@@ -1,0 +1,62 @@
+# Start with .\gradlew.bat run. Each request is independent.
+@baseUrl = http://localhost:8888
+
+### 200 text/plain, Echo: PI2
+GET {{baseUrl}}/echo?message=PI2
+
+> {%
+  client.test("Echo text", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(response.body === "Echo: PI2", "Exact echo text");
+    client.assert(response.headers.valueOf("Content-Type").indexOf("text/plain") === 0, "Plain text");
+  });
+%}
+
+### 400, Missing 'message' parameter
+GET {{baseUrl}}/echo
+
+> {%
+  client.test("Missing message", function () {
+    client.assert(response.status === 400, "Expected 400");
+    client.assert(response.body === "Missing 'message' parameter", "Exact error text");
+  });
+%}
+
+### 200 JSON with generated UUID and matching email; no password
+POST {{baseUrl}}/echoUser
+Content-Type: application/json
+
+{"email":"bob@gibts.net","password":"demo"}
+
+> {%
+  client.test("User JSON", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(response.headers.valueOf("Content-Type").indexOf("application/json") === 0, "JSON response");
+    client.assert(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(response.body.id), "UUID v4");
+    client.assert(response.body.email === "bob@gibts.net", "Matching email");
+    client.assert(Object.keys(response.body).sort().join(",") === "email,id", "Only public response fields");
+  });
+%}
+
+### 400, malformed JSON handled without internal details
+POST {{baseUrl}}/echoUser
+Content-Type: application/json
+
+{"email":
+
+> {%
+  client.test("Malformed JSON", function () {
+    client.assert(response.status === 400, "Expected 400");
+    client.assert(typeof response.body === "string" && response.body.indexOf("Exception") === -1, "Safe error text");
+  });
+%}
+
+### 200, server is still operational after error
+GET {{baseUrl}}/echo?message=still-alive
+
+> {%
+  client.test("Recovery", function () {
+    client.assert(response.status === 200, "Expected 200");
+    client.assert(response.body === "Echo: still-alive", "Server still operational");
+  });
+%}
