@@ -1,3 +1,5 @@
+> Superseded preparation status: date tests and the authorized single-author technical conflict exercise are complete. See [current audit](final-local-audit.md) and [actual conflict evidence](technical-conflict-evidence.md). Genuine independent teammate participation remains pending.
+
 ﻿# Part 1 live teamwork session
 
 Prepared 13 November 2026. This document prepares real actions; it is not proof that the teammate contributed or a conflict occurred.

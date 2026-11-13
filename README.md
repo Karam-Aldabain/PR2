@@ -5,7 +5,7 @@ TypeScript-To-do-Anwendung mit der bestehenden Bootstrap-Oberfläche und einer E
 ## Team
 
 - Karam Samer Atallah Aldabain
-- Alayaideh, Mazen Mohammad Yousef
+- Mazen Mohammad Yousef Alayaideh
 
 ## Installation und Start (Windows / VS Code)
 
