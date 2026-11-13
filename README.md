@@ -140,3 +140,9 @@ See [Part 3 demonstration guide](docs/part3-demo-guide.md) and [Part 3 verificat
 The latest [final local audit](docs/final-local-audit.md) includes the mandatory local Git history and fresh-clone requirements. It records current builds, runtime/browser checks, and outstanding team, manual-tool and remote submission checks.
 
 The latest [Part 2 and Part 3 audit](docs/part2-part3-audit.md) records the verified functionality, the malformed-URL error fix and the outstanding submission requirements. Successful automated tests do not establish HUE1 integration, actual group participation or completion of the manual WebStorm/DevTools demonstration.
+
+## Kalenderdaten und Grenzfalltests
+
+`dueDate` verwendet ein echtes Kalenderdatum im Format `YYYY-MM-DD`. Der Server prüft das Datum in UTC und vergleicht es mit der ursprünglichen Eingabe; dadurch wird beispielsweise ein automatisch auf März verschobener 29. Februar zurückgewiesen. Das Jahr 2000 ist ein Schaltjahr, 2100 dagegen nicht: Jahrhundertjahre müssen durch 400 teilbar sein. Der 30. April und der 31. Januar sind gültig, der 31. April ist ungültig.
+
+`npm.cmd test` führt auch HTTP-Grenzfalltests für diese Daten aus. Ungültige POST-Anfragen legen nichts an; ein ungültiges PATCH verändert weder den Titel noch andere gespeicherte Felder. Eine nachfolgende gültige Änderung prüft, dass der Server weiterarbeitet. Die automatisierte Ergänzung wurde unter Karams bestätigter Identität autorisiert; sie wird nicht als Mazens persönlich geprüfter Beitrag ausgegeben.

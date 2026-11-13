@@ -128,3 +128,31 @@ test('each mandatory PUT field and every supplied PATCH field is validated befor
   assert.equal(patched.data.dueDate, '2028-02-29');
   assert.equal(patched.data.id, original.id); assert.equal(patched.data.createdAt, original.createdAt);
 });
+
+test('Gregorian century and month-end dates validate over HTTP without partial writes', async t => {
+  const request = await fixture(t);
+  for (const dueDate of ['2000-02-29', '2027-04-30', '2027-01-31', '2100-02-28']) {
+    const created = await request(undefined, 'POST', { ...valid, dueDate });
+    assert.equal(created.status, 201, `Valid calendar date ${dueDate}`);
+    assert.equal(created.data.dueDate, dueDate);
+  }
+  const before = (await request()).data;
+  for (const dueDate of ['2100-02-29', '2027-04-31']) {
+    const rejected = await request(undefined, 'POST', { ...valid, dueDate });
+    assert.equal(rejected.status, 400, `Invalid calendar date ${dueDate}`);
+    assert.equal(typeof rejected.data.error, 'string');
+    assert.deepEqual((await request()).data, before, 'Rejected POST adds no resource');
+  }
+  const original = before[0];
+  const url = `/api/todos/${original.id}`;
+  for (const dueDate of ['2100-02-29', '2027-04-31']) {
+    const rejected = await request(url, 'PATCH', { title: 'Must not change', dueDate });
+    assert.equal(rejected.status, 400);
+    assert.deepEqual((await request(url)).data, original, 'Rejected PATCH is atomic');
+    assert.deepEqual((await request()).data, before, 'Server remains healthy and state unchanged');
+  }
+  const recovered = await request(url, 'PATCH', { dueDate: '2027-04-30' });
+  assert.equal(recovered.status, 200);
+  assert.deepEqual(recovered.data, { ...original, dueDate: '2027-04-30' });
+  assert.deepEqual((await request(url)).data, recovered.data);
+});
