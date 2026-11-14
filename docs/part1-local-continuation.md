@@ -6,6 +6,12 @@ The existing audit maps the outstanding work to HÜ1 sections 1.1–1.3. This up
 
 ## Next genuine local exercise
 
+Current execution record: Karam supplied his own line in this conversation and subsequently confirmed his identity and personal approval to commit it. Both new branches were created from `fbbc1dee445d3fd8508a2f9fb520daa0e1664c06`. His exact line was committed on `feature/part1-live-karam-v2` as `af1480a`, then integrated into HUE1 without squash as `fa8e5a2`. Only the first profile line changed:
+
+> Projektziel: Entwicklung einer benutzerfreundlichen To-do-Webanwendung, mit der Benutzer ihre Aufgaben erstellen, bearbeiten, verwalten und löschen können.
+
+`feature/part1-live-mazen-v2` remains at the common base with no new Mazen edit or attribution. Await Mazen's own wording and personal approval. No conflict or joint resolution has occurred in this new exercise. Independent authorship of his eventual wording must be confirmed by Mazen; it cannot be inferred from this record.
+
 1. Start from clean, committed HUE1. Record `git rev-parse HUE1` as the new common base. Check `git status --short`, `git rev-parse main` and `git worktree list`. Use new branch names, for example `feature/part1-live-karam-v2` and `feature/part1-live-mazen-v2`; do not repurpose the old prepared branches or their old bases. Create both branches from this exact base before either edit is integrated. Each student should work in their own working copy or separate local worktree; no remote access is needed for the local exercise.
 2. Each student independently supplies a replacement for the first `Projektziel:` line of `docs/projektprofil.md`, before viewing the other's text. Each explains the intention and changes only that line on their own branch. Collect their actual text rather than using assistant-written alternatives. Identical changes do not establish a conflict.
 3. Each student inspects `git status`, `git diff -- docs/projektprofil.md` and the staged diff, then personally approves and commits their own edit with their confirmed author AND committer identity. Check identity/environment overrides; never let Karam's default identity silently attribute Mazen's work. Existing identity records do not authorize a new unreviewed patch. Record each SHA and confirm both branches' merge base equals the recorded base.
