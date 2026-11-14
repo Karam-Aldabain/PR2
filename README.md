@@ -1,152 +1,95 @@
-# Todo-Verwaltung
+# Todo-Verwaltung und Vert.x-Echo-Service
 
-TypeScript-To-do-Anwendung mit der bestehenden Bootstrap-Oberfläche und einer Express-REST-API (Hausübung 1, Teil 2, Abschnitte 2.1–2.6). Anlegen, Bearbeiten, Statuswechsel, Details, Statistik und Tastaturbedienung bleiben erhalten. Der Server verwaltet die Daten im RAM: Neuladen erhält sie, ein Serverneustart löscht sie. Keine Datenbank und keine Dateipersistenz.
+THM Praktische Informatik 2, Hausübung 1: TypeScript-Webclient mit Bootstrap und Express-REST-API sowie ein eigenständiger Java-Vert.x-Service. Todos unterstützen Anlegen, Bearbeiten, Statuswechsel, Löschen, Details, Statistik und Tastaturbedienung. Der Express-Server hält die Daten im RAM: Neuladen erhält sie, ein Serverneustart setzt sie zurück.
 
 ## Team
 
-- Karam Samer Atallah Aldabain — GitLab: `ksaa11`
-- Mazen Mohammad Yousef Alayaideh — GitLab: `mmya68`
+- Karam Samer Atallah Aldabain — GitLab: ksaa11
+- Mazen Mohammad Yousef Alayaideh — GitLab: mmya68
 
-## Installation und Start (Windows / VS Code)
+## Voraussetzungen und Express-Start
 
-Voraussetzung: Node.js 24 oder neuer mit npm; getestet mit Node 24.22.1 und npm 11.19.1. In PowerShell wird npm.cmd verwendet, um Probleme mit der Ausführungsrichtlinie für npm.ps1 zu vermeiden.
+Node.js 24 oder neuer mit npm, für Java ein JDK 25 mit JAVA_HOME und bin im PATH. Der Gradle Wrapper ist enthalten; der erste Java-Build benötigt Internetzugriff. Browsertests benötigen installiertes Google Chrome. In PowerShell npm.cmd verwenden; unter macOS/Linux npm und sh ./gradlew verwenden.
 
-```powershell
+~~~powershell
 git clone https://git.thm.de/pi2-ws2627-fr3f/todoapp-client.git
 cd todoapp-client
 git switch HUE1
 npm.cmd ci
 npm.cmd run build
 npm.cmd start
-```
+~~~
 
-Die geprüfte Lösung wird lokal über feature/hue1-express, feature/hue1-vertx und feature/hue1-documentation in HUE1 integriert. main bleibt unverändert auf dem Startercommit c6acd6e. Ein Remote-Clone setzt voraus, dass das Team den vollständigen HUE1-Stand nach ausdrücklicher Freigabe veröffentlicht; lokale Integration allein veröffentlicht nichts.
+Oberfläche: http://localhost:3000/, API: http://localhost:3000/api/todos. HTML über den Server öffnen. Optional vor dem Start: $env:PORT = '3002'. Mit Strg+C stoppen. HUE1 ist lokal integriert; die Veröffentlichung ist ein separater Schritt.
 
-Oberfläche: http://localhost:3000/ → API: http://localhost:3000/api/todos. Ein Server genügt; HTML nicht per Doppelklick öffnen. Mit Strg+C stoppen. Optional vor dem Start: $env:PORT = '3001'.
+## Vert.x starten und prüfen
 
-## Entwicklung und Prüfungen
+Vert.x läuft unabhängig auf Port 8888. Aus dem Projektstamm:
 
-```powershell
-npm.cmd run typecheck
-npm.cmd test
-npm.cmd run test:browser
-```
-
-build kompiliert Client und Server. test baut und führt die automatisierten API-Tests mit dem Node-Test-Runner aus. test:browser baut und startet einen eigenen Server sowie Playwright mit lokal installiertem Google Chrome; Port 3000 und für den Serverstopp-Test Port 3001 müssen frei sein. Tests löschen ihre eigenen In-Memory-Testdaten. Es ist kein Linter konfiguriert. npm.cmd run watch kompiliert ausschließlich Clientänderungen automatisch; nach Serveränderungen neu bauen und neu starten.
-
-## Architektur
-
-- todo_app/src/todoApp.ts: vorhandene Darstellung, Dialoge, Statistik, Fokus und lokaler Anzeigestand.
-- todo_app/src/api.ts: gebündelte fetch-Aufrufe, HTTP-/Netzwerkfehler und Behandlung von 204.
-- todo_api/src/app.ts: Express-Routen, statische Dateien und zentraler JSON-Fehlerhandler.
-- todo_api/src/store.ts: maßgebliche In-Memory-Sammlung, UUIDs, Erstellungszeitpunkte und Änderungen.
-- todo_api/src/validation.ts: vollständige Prüfung vor Änderungen.
-- todo_api/src/model.ts: Server-Datentypen; der Client besitzt entsprechende JSON-Transporttypen.
-
-Browseraktion → fetch → Express → Validierung → TodoStore → JSON-Antwort → Anzeigestand → render(). Nur erfolgreiche Antworten verändern den lokalen Anzeigestand. Anfangs ist die Sammlung leer; es werden beim öffnen keine Beispieldaten angelegt. Mehrere Fenster greifen auf dieselbe Serverinstanz zu und laden fremde Änderungen durch Neuladen. Es gibt keine automatische Synchronisierung.
-
-## REST-Schnittstelle
-
-| Methode | Pfad | Erfolg |
-| --- | --- | --- |
-| GET | /api/todos | 200, JSON-Array, auch [] |
-| GET | /api/todos/:id | 200, Todo |
-| POST | /api/todos | 201, Todo und Location |
-| PUT | /api/todos/:id | 200, vollständig ersetzte bearbeitbare Felder |
-| PATCH | /api/todos/:id | 200, teilweise aktualisiertes Todo |
-| DELETE | /api/todos/:id | 204, kein Inhalt |
-
-JSON-Felder: title und description (getrimmt, nicht leer), priority (hoch/mittel/niedrig), status (offen/in Bearbeitung/erledigt), optional dueDate (gültiges Kalenderdatum YYYY-MM-DD). id ist eine servergenerierte UUID, createdAt ein servergenerierter ISO-Zeitpunkt.
-
-POST enthält title, description, priority und optional dueDate; status ist immer zunächst offen. PUT benötigt title, description, priority und status; ausgelassenes dueDate entfernt den bisherigen Termin. PATCH benötigt mindestens ein bearbeitbares Feld; ausgelassene Felder bleiben erhalten, dueDate: null entfernt den Termin. null ist nur bei PATCH für dueDate erlaubt. Unbekannte Felder und serververwaltete Felder werden mit 400 abgelehnt. JSON-Anfragen verwenden Content-Type: application/json; maximal 32 KiB.
-
-Fehlerformat: {"error":"Verständliche Fehlermeldung"}. 400 bei ungültigen Eingaben/JSON, 404 bei fehlenden Ressourcen oder unbekannten API-Pfaden, 500 bei unerwarteten Fehlern (Details nur im Serverlog). PUT erstellt keine Ressource. Wiederholtes DELETE liefert nach dem ersten Löschen 404, der Zustand bleibt gelöscht.
-
-## HTTP-Client und Browserprüfung
-
-Server starten und tests/todo-api.http in WebStorm mit „Run All Requests“ von oben nach unten ausführen. POST speichert die erzeugte ID als globale Variable todoId; Handler speichern Vergleichszustände. Jeder Lauf erstellt ein neues Todo und löscht es am Ende. Falls PORT geändert wurde, baseUrl anpassen. Die Datei wurde hier nicht in WebStorm ausgeführt; entsprechende Fälle wurden automatisiert über echte HTTP-Verbindungen geprüft.
-
-`npm.cmd test` führt zusätzlich die tatsächliche todo-api.http-Datei mit ihren Antwortprüfungen gegen einen isolierten Testserver aus. Für beide .http-Dateien Express auf 3000 und Vert.x auf 8888 starten und im Projektstamm `npm.cmd run test:http` ausführen. Dieser Node-Kompatibilitätsrunner unterstützt das hier verwendete Anfrage-/Handlerformat und ist keine WebStorm-Ausführung. Der Chrome-Netzwerktest schreibt Methoden, Payloads, Header, Status und Antwortinhalte nach `test-results/.../network-evidence.json` und als Playwright-Anhang. Die Aufzeichnung verwendet echte Browseranfragen und das Chrome DevTools Protocol; sie ersetzt keine behauptete manuelle DevTools-Bedienung.
-
-Browserablauf und Tutorfragen: [Demonstrationsanleitung](docs/part2-demo-guide.md). Nachweise je Anforderung: [Prüfbericht](docs/part2-compliance.md).
-
-## Fehlerbehebung
-
-- EADDRINUSE: anderen Server auf dem Port stoppen oder PORT ändern; danach die passende URL öffnen.
-- Server nicht erreichbar: npm.cmd start im Projektstamm prüfen, dann neu laden/erneut versuchen.
-- Fehlendes JavaScript oder Modul: npm.cmd ci und npm.cmd run build ausführen.
-- Daten nach Neustart leer: erwartete RAM-Speicherung. Zum Testen erneut Todos anlegen.
-- Browser-Test startet nicht: Google Chrome installieren; die Playwright-Konfiguration verwendet channel: chrome.
-- HUE1 fehlt im Remote-Clone oder enthält nur den Starter: Die geprüfte Lösung ist lokal integriert. Ein Remote-Clone benötigt die ausdrücklich freigegebene Veröffentlichung von HUE1; bislang wurde nichts gepusht.
-
-## Teil 1
-
-Teil 1 behandelt Git und Projektstart gemäß HÜ1.pdf 1.1–1.3. Es ist kein zusätzlicher Server und verlangt keine weiteren API-Endpunkte. Die ursprüngliche README mit den damaligen Startbefehlen wurde unverändert als [historische Teil-1-README](docs/part1-readme.md) erhalten; sie beschreibt den Browserstand vor der API-Anbindung.
-
-Der [Projektstart und Ausgangsstand](docs/part1-project-start.md) dokumentiert den tatsächlich geprüften Starter mit drei Beispieltodos und den Übergang zur heutigen Anwendung. [docs/projektprofil.md](docs/projektprofil.md) enthält das geforderte gemeinsame Projektprofil. Der [Team- und Konfliktablauf](docs/part1-team-workflow.md) beschreibt die noch durchzuführenden echten Beiträge, den Merge-Konflikt und die HUE1-Abgabe. Der [Teil-1-Erfüllungsbericht](docs/part1-completion-report.md) trennt erledigte lokale Arbeit von offenen Team-/GitLab-Schritten.
-
-Der vollständige technische Stand ist lokal in HUE1 integriert und aus einem frischen lokalen Clone geprüft. main bleibt unverändert. Beide Teamnamen sind eingetragen. Mazen hat den KI-vorbereiteten PUT-Test und README-Zusatz persönlich geprüft und freigegeben; sein autorisierter Commit ist 78be29c. Ein echter technischer Konflikt wurde unter Karams Autorisierung erzeugt und mit Merge-Commit 889a6d3 aufgelöst. Die unabhängige Durchführung durch beide Studierende und eine gemeinsame Lösungsentscheidung sind damit nicht belegt. Remote-Zugriffs-/Veröffentlichungsnachweise stehen ebenfalls aus. Die Anleitung ersetzt deren Durchführung nicht. Abschnitt 1.4 (Fruit-API) und 2.7 (Hypermedia) sind freiwillig und nicht zusätzlich umgesetzt.
-
-## Part 3 — Vert.x Echo Service
-
-Part 3 is implemented separately in `echo-service/`. Vert.x uses port **8888** and Express uses port **3000**; each starts independently, and both can run together.
-
-Install a **JDK 25** (for example [Eclipse Temurin](https://adoptium.net/temurin/releases/?version=25)), set `JAVA_HOME` to its installation directory, and include its `bin` directory on `PATH`. Restart the VS Code terminal after installation. A JRE alone is insufficient. Gradle 9.1.0 is pinned by the included Wrapper, so a separate Gradle installation is unnecessary. The first build needs internet access to download Gradle and Maven Central dependencies.
-
-From the repository root in PowerShell:
-
-```powershell
+~~~powershell
 cd echo-service
 java -version
 javac -version
 .\gradlew.bat clean build
-.\gradlew.bat test
 .\gradlew.bat run
-```
+~~~
 
-Successful startup prints `HTTP server started on port 8888`. Keep this terminal open and use a second terminal for requests. Press **Ctrl+C** to stop. The bare `/` path has no interface; use `/echo` or `/echoUser`.
+Nach „HTTP server started on port 8888“ in einem zweiten Terminal im Ordner echo-service:
 
-From `echo-service/`, run these Windows-compatible commands (`curl.exe` avoids PowerShell's `curl` alias; JSON fixture files avoid shell quoting differences):
-
-```powershell
+~~~powershell
 curl.exe -i "http://localhost:8888/echo?message=PI2"
 curl.exe -i "http://localhost:8888/echo"
 curl.exe -i -X POST "http://localhost:8888/echoUser" -H "Content-Type: application/json" --data-binary "@tests/user.json"
 curl.exe -i -X POST "http://localhost:8888/echoUser" -H "Content-Type: application/json" --data-binary "@tests/malformed.json"
 curl.exe -i "http://localhost:8888/echo?message=still-alive"
-```
+~~~
 
-Expected results, in order: **200** `text/plain` with `Echo: PI2`; **400** with `Missing 'message' parameter`; **200** `application/json` with a generated UUID `id` and `email: bob@gibts.net` (no password); **400** for malformed JSON; **200** proving the server still responds. An empty `message` is present and returns `Echo: `, as in the lecture. User JSON requires nonblank email and password; it performs no authentication, email-address verification or password storage. Bodies exceeding 32 KiB return 413.
+Erwartet: 200 „Echo: PI2“; 400 „Missing 'message' parameter“; 200 JSON mit UUID/id und email (ohne Passwort); 400 für fehlerhaftes JSON; anschließend 200. Der Service speichert keine Benutzerdaten und führt keine Anmeldung aus. / hat keine Oberfläche. Beide Anwendungen können gleichzeitig laufen.
 
-`Start.java` initializes Vert.x, the Router, EchoApi and the HTTP listener. `echo/api/EchoApi.java` registers handlers; `echo/dto/` contains the request and response records. JUnit tests start real HTTP listeners on an available port and verify content, statuses, UUIDs and error recovery. Results are written to `echo-service/build/reports/tests/test/index.html`. An additional HTTP-client file is provided at `echo-service/tests/echo-api.http`.
+## Tests und Entwicklung
 
-The Java service runs on the JVM and uses Vert.x Router, RoutingContext and BodyHandler. Part 2 runs TypeScript compiled to JavaScript on Node.js with Express request/response objects and `express.json()`. Both select handlers by HTTP method/path and send ordinary HTTP responses; the Echo service does not manage the To-do data or serve its frontend.
+Im Projektstamm:
 
-If `JAVA_HOME` is missing, point it at the JDK 25 directory (not `bin`). If port 8888 is occupied, stop the other application before retrying. On macOS/Linux use `sh ./gradlew run` instead of the batch script. Build caches and output are ignored; the Wrapper scripts, JAR and properties must be committed with the source after review.
+~~~powershell
+npm.cmd run build
+npm.cmd run typecheck
+npm.cmd test
+npm.cmd run test:browser
+npm.cmd run test:http
+~~~
 
-For this existing workspace only, a checksum-verified portable Temurin JDK was downloaded for verification. It is ignored and is not included in a fresh clone. To use it immediately from `echo-service/` without a system installation:
+test baut und prüft API sowie die tatsächliche Todo-HTTP-Datei; test:browser startet eigene Listener auf 127.0.0.1:3000/3001 und prüft Chrome einschließlich Fehlerfällen und Netzwerkverkehr. Diese Ports müssen frei sein. test:http benötigt laufendes Express auf 3000 und Vert.x auf 8888; es führt beide HTTP-Dateien mit einem Node-Kompatibilitätsrunner aus. Es ist keine WebStorm-Ausführung. Java-Tests: im Ordner echo-service .\gradlew.bat test; Bericht unter build/reports/tests/test/index.html. npm.cmd run watch kompiliert Clientänderungen; nach Serveränderungen neu bauen und starten.
 
-```powershell
-$env:JAVA_HOME = (Get-ChildItem ..\.tools\jdk -Directory | Select-Object -First 1).FullName
-$env:Path = "$env:JAVA_HOME\bin;$env:Path"
-$env:GRADLE_USER_HOME = Join-Path (Resolve-Path ..\.tools) 'gradle-home'
-.\gradlew.bat run
-```
+tests/todo-api.http gemäß Aufgabenblatt in WebStorm von oben nach unten ausführen. Die POST-Antwort speichert todoId und Vergleichszustände über client.global für die Folgeanfragen. In VS Code REST Client zuerst die benannte Create-Anfrage ausführen; @todoId liest deren Antwort-ID. Die eingebetteten client.test-Skripte sind für WebStorm. Bei anderem Port baseUrl anpassen. Jeder vollständige Lauf erstellt und löscht sein eigenes Todo.
 
-See [Part 3 demonstration guide](docs/part3-demo-guide.md) and [Part 3 verification report](docs/part3-compliance.md). The reviewed solution is integrated locally into `HUE1` with preserved feature merges; `main` is unchanged. Publication and Moodle submission require explicit approval.
+## Schnittstelle und Struktur
 
-## Combined review
+| Methode | Pfad | Erfolg |
+| --- | --- | --- |
+| GET | /api/todos | 200 JSON-Array, auch [] |
+| GET | /api/todos/:id | 200 Todo |
+| POST | /api/todos | 201 Todo und Location |
+| PUT | /api/todos/:id | 200 vollständiger Ersatz |
+| PATCH | /api/todos/:id | 200 teilweise Änderung |
+| DELETE | /api/todos/:id | 204 ohne Inhalt |
 
-The latest [final local audit](docs/final-local-audit.md) includes the mandatory local Git history and fresh-clone requirements. It records current builds, runtime/browser checks, and outstanding team, manual-tool and remote submission checks.
+title und description sind getrimmte, nicht leere Zeichenketten; priority ist hoch/mittel/niedrig, status offen/in Bearbeitung/erledigt. dueDate ist optional und ein echtes Kalenderdatum YYYY-MM-DD. IDs, createdAt und anfänglich offen vergibt der Server. PUT verlangt alle bearbeitbaren Pflichtfelder einschließlich status; ein ausgelassener Termin wird entfernt. PATCH prüft mindestens ein bearbeitbares Feld; dueDate: null entfernt den Termin. Unbekannte/serververwaltete Felder werden abgelehnt. Kalender-Grenzfälle wie 2000-02-29 versus 2100-02-29 und ungültige Monatsenden werden getestet; ungültige Änderungen bleiben atomar.
 
-The latest [Part 2 and Part 3 audit](docs/part2-part3-audit.md) records the verified functionality, the malformed-URL error fix and the outstanding submission requirements. Successful automated tests do not establish HUE1 integration, actual group participation or completion of the manual WebStorm/DevTools demonstration.
+JSON-Anfragen verwenden Content-Type: application/json (maximal 32 KiB). Fehlerformat: {"error":"Fehlermeldung"}; 400 bei ungültigen Eingaben/JSON, 404 bei fehlenden Ressourcen/Pfaden, 500 bei internen Fehlern ohne interne Details in der Antwort. GET verändert nichts; wiederholtes PUT bleibt fachlich gleich; wiederholtes DELETE kann 404 liefern, die Ressource bleibt gelöscht.
 
-## Kalenderdaten und Grenzfalltests
+- todo_app/src/: Darstellung und gebündelte fetch-Aufrufe; todo_app/public/: HTML und generierte ES-Module.
+- todo_api/src/: app.ts für HTTP/static, store.ts für die RAM-Map, validation.ts für Eingaben, model.ts für Typen, server.ts als Einstiegspunkt.
+- echo-service/: eigener Gradle-Build, Start.java, EchoApi.java und UserRequest/UserResponse-Records.
+- tests/: API-, HTTP-Datei- und Browserprüfungen. Abhängigkeiten, Build-Ausgaben, IDE-Dateien und lokale Werkzeuge sind ignoriert.
 
-`dueDate` verwendet ein echtes Kalenderdatum im Format `YYYY-MM-DD`. Der Server prüft das Datum in UTC und vergleicht es mit der ursprünglichen Eingabe; dadurch wird beispielsweise ein automatisch auf März verschobener 29. Februar zurückgewiesen. Das Jahr 2000 ist ein Schaltjahr, 2100 dagegen nicht: Jahrhundertjahre müssen durch 400 teilbar sein. Der 30. April und der 31. Januar sind gültig, der 31. April ist ungültig.
+## Projektstart und Abnahme
 
-`npm.cmd test` führt auch HTTP-Grenzfalltests für diese Daten aus. Ungültige POST-Anfragen legen nichts an; ein ungültiges PATCH verändert weder den Titel noch andere gespeicherte Felder. Eine nachfolgende gültige Änderung prüft, dass der Server weiterarbeitet. Die automatisierte Ergänzung wurde unter Karams bestätigter Identität autorisiert; sie wird nicht als Mazens persönlich geprüfter Beitrag ausgegeben.
+Der ursprüngliche main-Client verwaltete Todos ausschließlich im Browser-RAM und erzeugte drei Beispiele: „Hausübung vorbereiten“ (hoch/offen, Termin morgen), „TypeScript wiederholen“ (mittel/in Bearbeitung) und „Projekt starten“ (niedrig/erledigt), beide ohne Termin. Er bot bereits Dialoge, Bearbeiten, Checkbox, Löschen, Details, Statistik und Fokusbehandlung. Neuladen setzte diesen Browserbestand zurück. Der aktuelle Express-Stand startet leer und ist serverseitig maßgeblich; ein Browserfenster sieht fremde Änderungen nach Neuladen.
 
-### Vollständiger Ersatz und ungültige Kalenderdaten
+Zur Browser-Demonstration: Network öffnen, Liste laden, Todo anlegen, neu laden, in einem zweiten Fenster prüfen, bearbeiten (PUT), Checkbox ändern (PATCH), löschen (204), Fehleranfragen zeigen. Methoden, URLs, Payloads, Location, Status und Antworten erklären. Bei geöffnetem Client Express stoppen und eine Aktion versuchen: verständlicher Fehler statt lokaler Erfolg; nach Neustart ist der RAM leer. fetch benötigt response.ok für HTTP-Fehler; 204 wird nicht als JSON gelesen.
 
-Ein PUT muss alle bearbeitbaren Pflichtfelder enthalten. Auch wenn Titel, Beschreibung, Priorität und Status gültig sind, wird die gesamte Anfrage bei einem ungültigen Fälligkeitsdatum mit 400 abgewiesen: Kein Feld des vorhandenen Todos darf sich ändern. Der ergänzende HTTP-Test prüft diesen Fall und anschließend einen erfolgreichen PUT mit dem 30. April. ID und Erstellungszeitpunkt bleiben erhalten. Ausführen: `npm.cmd test`.
+Express-Trace: UI → todo_app/src/api.ts fetch → express.json() → app.post('/api/todos') → validate → TodoStore.create → Location/201 JSON → Anzeige. Vert.x-Trace: Start.main initialisiert Vertx/Router/EchoApi → POST /echoUser → BodyHandler → rc.body().asPojo(UserRequest.class) → Feldprüfung → UUID/UserResponse → Json.encode/200 JSON. Beide nutzen Methoden, Pfade, Header und Status; Express läuft als JavaScript auf Node.js, Vert.x als Java auf der JVM. Nur der Todo-Service besitzt einen Datenbestand. Passwortfelder werden weder gespeichert noch zurückgegeben; Event-Loop-Handler dürfen nicht durch lange/blockierende Arbeit aufgehalten werden.
+
+[Projektprofil](docs/projektprofil.md) und [Zusammenarbeit und Konflikt](docs/part1-live-conflict-evidence.md) dokumentieren die Git-Aufgabe. Für die Abnahme muss jedes Mitglied eigene Beiträge, Konfliktursache/-lösung und beide Anfragepfade erklären können. Optional sind Fruit API (1.4) und Hypermedia (2.7).
+
+Vor Veröffentlichung: gemeinsamer privater Gruppen-Fork, Tutorzugriff und individuelle SSH-/Clone-/Push-Berechtigungen prüfen; HUE1 veröffentlichen und von allen Mitgliedern holen; frischen veröffentlichten Clone starten; Moodle-Frist und HUE1-Branch-URL prüfen. Diese externen Schritte sind nicht durch lokale Commits belegt. main bleibt bis zur gesonderten Freigabe nach Abnahme unverändert. Bei EADDRINUSE Portbelegung prüfen; bei fehlendem Java JAVA_HOME auf das JDK-Verzeichnis setzen.

@@ -49,7 +49,6 @@ public final class EchoApi {
             return;
         }
 
-        // Only this response DTO is serialized; passwords are neither stored nor returned.
         UserResponse res = new UserResponse(UUID.randomUUID().toString(), req.email());
         rc.response().setStatusCode(200).putHeader("Content-Type", "application/json")
             .end(Json.encode(res));
@@ -67,7 +66,6 @@ public final class EchoApi {
                 .end(status == 413 ? "Request body too large" : "Invalid request");
             return;
         }
-        // Do not log the request body, which may contain a password.
         System.err.println("Unexpected Echo API failure: "
             + (rc.failure() == null ? "unknown error" : rc.failure().getClass().getSimpleName()));
         rc.response().setStatusCode(500).putHeader("Content-Type", "text/plain; charset=utf-8")
