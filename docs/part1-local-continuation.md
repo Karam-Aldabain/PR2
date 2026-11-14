@@ -1,5 +1,7 @@
 # Part 1 local teamwork continuation
 
+14 November completion update: the local exercise is now resolved and integrated into HUE1. [Actual evidence and participant confirmations](part1-live-conflict-evidence.md) supersede the pending execution status below. The independent-composition/joint-agreement claims are participant reports; actual conflict, commits, identities and merge parents were checked by the assistant. The first two checklist items are completed within that evidence scope. Final local-clone verification, individual explanation and external requirements remain separate.
+
 Prepared 13 November 2026. This is a procedure and checklist, not evidence of completed participation. It supersedes the old live-session branch/base instructions for the next exercise. No remote commands are part of this session. Keep main at `c6acd6e640ee80388ec231bc04b1f4bfaf8fd26c`.
 
 The existing audit maps the outstanding work to HÜ1 sections 1.1–1.3. This update uses that recorded requirement mapping; it does not claim a fresh reading of the assignment PDF. Existing names, project profile, approved contributions, feature merges and local clean-clone evidence need not be invented or repeated as new work. Mazen's approved `78be29c` contribution is already integrated. The conflict resolved in `889a6d3` is technically real but was executed under Karam's identity; it cannot prove two-student participation.
