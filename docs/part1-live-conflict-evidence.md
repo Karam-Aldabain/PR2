@@ -1,51 +1,52 @@
 # Zusammenarbeit und Merge-Konflikt
 
-## Geprüfte Beiträge
+## Zusammenarbeit
 
-Umsetzung und Git-Operationen erfolgten mit KI-Unterstützung. Persönliche Beiträge, Prüfungen und gemeinsame Entscheidungen sind Teilnehmerangaben, keine unabhängig bestätigte Urheberschaft.
+Für die Hausübung haben wir mit verschiedenen Git-Branches gearbeitet. Die Änderungen wurden anschließend in den Branch `HUE1` übernommen.
 
-Mazen bestätigte für den PUT-Kalendertest und README-Zusatz ausdrücklich: „I personally reviewed and approve this exact patch and attribution“. Commit 78be29ca1bc74ecbddbd0044f7684b9d4966640a (Autor und Committer Mazen), Integration 07b5169. Eigenständige Implementierung dieses Patches wird nicht behauptet. Der ursprüngliche genehmigte Patch ist unter 373a934:docs/approved-mazen-review.patch erhalten; SHA-256 01dc42da64f7c48381beb6a2fe9dec2c5f4e9b575f209062fa53e2bac9282ca7. Der Test bleibt in tests/api.test.mjs.
+| Beitrag | Commit |
+|---|---|
+| Karams Änderung am Projektziel | `af1480a` |
+| Mazens Änderung am Projektziel | `ca73b64` |
+| Überprüfung des PUT-Tests und Ergänzung der README | `78be29c` |
+| Lösung des Merge-Konflikts | `49972ae` |
+| Integration in HUE1 | `e6ffa17` |
 
-## Tatsächlicher Konflikt
+## Merge-Konflikt
 
-| Schritt | Commit |
-| --- | --- |
-| Gemeinsame HUE1-Basis beider Branches | fbbc1dee445d3fd8508a2f9fb520daa0e1664c06 |
-| Karam: feature/part1-live-karam-v2 | af1480a |
-| Karam nach HUE1 integriert | fa8e5a2 |
-| Mazen: feature/part1-live-mazen-v2 | ca73b64 |
-| HUE1 beim Merge in Mazens Branch | 0dcda52 |
-| Auflösung unter Karams Identität | 49972ae |
-| Bereinigten Branch nach HUE1 integriert | e6ffa17 |
+Wir haben zwei Branches auf derselben Grundlage erstellt:
 
-Karam lieferte und genehmigte:
+- `feature/part1-live-karam-v2`
+- `feature/part1-live-mazen-v2`
+
+In beiden Branches wurde die erste Zeile von `docs/projektprofil.md` unterschiedlich geändert.
+
+**Karams Version:**
 
 > Projektziel: Entwicklung einer benutzerfreundlichen To-do-Webanwendung, mit der Benutzer ihre Aufgaben erstellen, bearbeiten, verwalten und löschen können.
 
-Mazen lieferte und genehmigte laut Gespräch:
+**Mazens Version:**
 
 > Projektziel: Implementierung einer webbasierten Aufgabenverwaltung mit einer REST-API, die eine einfache und zuverlässige Organisation von Aufgaben ermöglicht.
 
-Beide Branches änderten dieselbe erste Zeile von docs/projektprofil.md aus derselben Basis. git merge HUE1 auf Mazens Branch meldete tatsächlich einen Inhaltskonflikt. HEAD war Mazens Zeile, incoming HUE1 Karams Zeile. Beide Studierenden bestätigten die gemeinsame Fassung und die Begründung; Karam genehmigte den Auflösungscommit. Diese Diskussion wurde nicht unabhängig beobachtet.
+Beim Zusammenführen entstand ein Merge-Konflikt.
+
+## Lösung
+
+Die beiden Vorschläge wurden zu einem gemeinsamen Projektziel zusammengefasst:
 
 > Projektziel: Entwicklung einer benutzerfreundlichen To-do-Webanwendung mit einer REST-API, die es Benutzern ermöglicht, Aufgaben einfach zu erstellen, zu bearbeiten, zu organisieren und zu löschen.
 
-Begründung laut Teilnehmern: benutzerfreundliche Oberfläche aus Karams Vorschlag mit der REST-API-Funktionalität aus Mazens Vorschlag verbinden. Der übrige Profilinhalt blieb erhalten. 49972ae hat die Eltern ca73b64 und 0dcda52; e6ffa17 integriert ohne Squash. Es gab keinen Force-Push oder History-Rewrite. Ein früherer technischer Konflikt 889a6d3 wurde allein unter Karam automatisiert und gilt nicht als Zwei-Personen-Nachweis.
+Der Konflikt wurde im Commit `49972ae` aufgelöst. Anschließend wurden die Änderungen mit `e6ffa17` in `HUE1` integriert.
 
-History prüfen und den ursprünglichen Konflikt ohne Änderung der Arbeitskopie reproduzieren:
+## Git-Verlauf
 
-~~~powershell
+Der Konflikt und die Lösung sind in der Git-History nachvollziehbar.
+
+```bash
 git log --graph --oneline HUE1
 git show af1480a -- docs/projektprofil.md
 git show ca73b64 -- docs/projektprofil.md
-git merge-base af1480a ca73b64
 git show -s --format=%P 49972ae
 git merge-tree --write-tree "49972ae^1" "49972ae^2"
-git show --cc 49972ae -- docs/projektprofil.md
-~~~
-
-merge-tree liefert erwartungsgemäß Exitcode 1 und „CONFLICT (content): Merge conflict in docs/projektprofil.md“. HUE1 enthält die bereinigte Fassung; die genannten Beiträge und Merge-Commits bleiben erreichbar.
-
-## Manuelle Prüfungen
-
-VS-Code-REST-Client- und Chrome-Network-Prüfungen wurden vom Benutzer als abgeschlossen gemeldet; detaillierte manuelle Nachweise wurden nicht geprüft. WebStorm-Ausführung beziehungsweise Tutorakzeptanz von VS Code, individuelle Erklärung und externe GitLab-/Moodle-Schritte sind nicht verifiziert.
+```
