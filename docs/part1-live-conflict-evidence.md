@@ -1,37 +1,51 @@
-# Live student-supplied profile conflict — resolved locally
+# Zusammenarbeit und Merge-Konflikt
 
-Completion update, 14 November 2026: the user supplied the final wording, rationale and confirmation that Karam and Mazen reviewed and agreed, with Karam approving the resolution commit under his identity. This is participant-reported agreement; the assistant did not independently observe their discussion. The assistant committed the supplied resolution as `49972ae599af6774141d25601bdc682e04c8c7f1`, author/committer Karam. Its two parents are `ca73b64ba6762055b482c21e16ba81c3bd2000b5` and `0dcda52c2b90e5a274b6815670b59b961632d5b0`. HUE1 integration without squash is `e6ffa1790d537c175b576c6103821594d3b62a87`. Both original student edits remain in history.
+## Beiträge und KI-Unterstützung
 
-Agreed line:
+Die Anwendung, Tests und Dokumentation wurden mit Codex-Unterstützung erstellt und bearbeitet. Git-Operationen wurden vom Assistenten unter den freigegebenen Identitäten ausgeführt. Eigene Formulierungen, persönliche Prüfungen und gemeinsame Entscheidungen sind Teilnehmerangaben; Git-Metadaten authentifizieren weder die Person am Gerät noch ein GitLab-Konto. Die individuelle Erklärung des Gesamtergebnisses bleibt erforderlich.
 
-> Projektziel: Entwicklung einer benutzerfreundlichen To-do-Webanwendung mit einer REST-API, die es Benutzern ermöglicht, Aufgaben einfach zu erstellen, zu bearbeiten, zu organisieren und zu löschen.
+Mazen bestätigte für den assistentenvorbereiteten PUT-Kalendertest und README-Zusatz ausdrücklich: „I personally reviewed and approve this exact patch and attribution“. Commit 78be29ca1bc74ecbddbd0044f7684b9d4966640a (Autor und Committer Mazen), Integration 07b5169. Eigenständige Implementierung dieses Patches wird nicht behauptet. Der ursprüngliche genehmigte Patch ist unter 373a934:docs/approved-mazen-review.patch erhalten; SHA-256 01dc42da64f7c48381beb6a2fe9dec2c5f4e9b575f209062fa53e2bac9282ca7. Der Test bleibt in tests/api.test.mjs.
 
-Reported rationale: combine Karam's user-friendly interface emphasis with Mazen's REST API functionality and describe the project's purpose clearly. The assistant inspected the real conflict and merge parents, removed the markers and checked whitespace. The pending statements below describe the earlier pre-resolution state. No individual oral demonstration, remote authentication or independently observed student discussion is inferred.
+## Tatsächlicher Konflikt
 
-14 November 2026. Participation is based on statements in the conversation; the assistant cannot independently authenticate who is typing or observe independent composition. Karam supplied his line and confirmed attribution/approval. The second line was supplied in response to the request for Mazen's own wording; after clarification the user stated “MAZEN APPROVE”. This is recorded as Mazen's reported personal approval, not independent identity verification. The assistant executed Git operations using the students' previously confirmed identities.
+| Schritt | Commit |
+| --- | --- |
+| Gemeinsame HUE1-Basis beider Branches | fbbc1dee445d3fd8508a2f9fb520daa0e1664c06 |
+| Karam: feature/part1-live-karam-v2 | af1480a |
+| Karam nach HUE1 integriert | fa8e5a2 |
+| Mazen: feature/part1-live-mazen-v2 | ca73b64 |
+| HUE1 beim Merge in Mazens Branch | 0dcda52 |
+| Auflösung unter Karams Identität | 49972ae |
+| Bereinigten Branch nach HUE1 integriert | e6ffa17 |
 
-- Common base: `fbbc1dee445d3fd8508a2f9fb520daa0e1664c06`.
-- Karam branch: `feature/part1-live-karam-v2`, edit `af1480a`, HUE1 integration `fa8e5a2`.
-- Mazen branch: `feature/part1-live-mazen-v2`, edit `ca73b64ba6762055b482c21e16ba81c3bd2000b5`; author and committer set to his previously confirmed identity.
-- Assistant ran `git merge HUE1` on Mazen's branch with incoming HUE1 `0dcda52`. Git reported a content conflict in `docs/projektprofil.md`. Both edits originate from the recorded common base.
-- Pending merge is isolated in `C:/Users/Magic Systems/Desktop/PI2/HUE1-live-mazen-v2`. The main todoapp-client worktree remains on HUE1. Do not run another merge in the pending worktree before resolving this one.
-
-HEAD / Mazen:
-
-> Projektziel: Implementierung einer webbasierten Aufgabenverwaltung mit einer REST-API, die eine einfache und zuverlässige Organisation von Aufgaben ermöglicht.
-
-Incoming HUE1 / Karam:
+Karam lieferte und genehmigte:
 
 > Projektziel: Entwicklung einer benutzerfreundlichen To-do-Webanwendung, mit der Benutzer ihre Aufgaben erstellen, bearbeiten, verwalten und löschen können.
 
-Assistant-observed unmerged entries:
+Mazen lieferte und genehmigte laut Gespräch:
 
-```text
-100644 d91de70d0e542b492876a03b4f123b52049c9f87 1 docs/projektprofil.md
-100644 88831c47c4bf7856e7793eb02b0130684207599f 2 docs/projektprofil.md
-100644 b0d9c2f32c844e8f3539fa15f75d31adf8a251c5 3 docs/projektprofil.md
-```
+> Projektziel: Implementierung einer webbasierten Aufgabenverwaltung mit einer REST-API, die eine einfache und zuverlässige Organisation von Aufgaben ermöglicht.
 
-Stage 1 is the common original line; stage 2 is Mazen's HEAD; stage 3 is Karam's incoming line. The conflict arises from differing edits to the same line, not branch names. Git also staged the nonconflicting teamwork-log update from HUE1.
+Beide Branches änderten dieselbe erste Zeile von docs/projektprofil.md aus derselben Basis. git merge HUE1 auf Mazens Branch meldete tatsächlich einen Inhaltskonflikt. HEAD war Mazens Zeile, incoming HUE1 Karams Zeile. Beide Studierenden bestätigten die gemeinsame Fassung und die Begründung; Karam genehmigte den Auflösungscommit. Diese Diskussion wurde nicht unabhängig beobachtet.
 
-Pending: both students inspect/explain the alternatives and supply their agreed final line plus rationale. Record their confirmation and the actual resolver's approval before completing the merge. No joint decision, resolution commit, completed teamwork requirement or final HUE1 integration of Mazen's edit is claimed yet. No push/submission/main modification occurred.
+> Projektziel: Entwicklung einer benutzerfreundlichen To-do-Webanwendung mit einer REST-API, die es Benutzern ermöglicht, Aufgaben einfach zu erstellen, zu bearbeiten, zu organisieren und zu löschen.
+
+Begründung laut Teilnehmern: benutzerfreundliche Oberfläche aus Karams Vorschlag mit der REST-API-Funktionalität aus Mazens Vorschlag verbinden. Der übrige Profilinhalt blieb erhalten. 49972ae hat die Eltern ca73b64 und 0dcda52; e6ffa17 integriert ohne Squash. Es gab keinen Force-Push oder History-Rewrite. Ein früherer technischer Konflikt 889a6d3 wurde allein unter Karam automatisiert und gilt nicht als Zwei-Personen-Nachweis.
+
+History prüfen und den ursprünglichen Konflikt ohne Änderung der Arbeitskopie reproduzieren:
+
+~~~powershell
+git log --graph --oneline HUE1
+git show af1480a -- docs/projektprofil.md
+git show ca73b64 -- docs/projektprofil.md
+git merge-base af1480a ca73b64
+git show -s --format=%P 49972ae
+git merge-tree --write-tree "49972ae^1" "49972ae^2"
+git show --cc 49972ae -- docs/projektprofil.md
+~~~
+
+merge-tree liefert hier erwartungsgemäß Exitcode 1 und „CONFLICT (content): Merge conflict in docs/projektprofil.md“. Das ist die historische Konkurrenz, kein ungelöster Konflikt in HUE1. Alle genannten Beiträge und Merge-Commits bleiben erreichbar. Commit ist lokal, Merge kombiniert lokale History, Fetch holt entfernte Stände und Push veröffentlicht sie; die lokalen Nachweise ersetzen keine individuellen Remote-Schritte.
+
+## Manuelle Prüfungen
+
+Der Benutzer meldete VS-Code-REST-Client-Prüfungen und Chrome-DevTools-Network-Inspektion für Teil 2 als abgeschlossen. Screenshots oder detaillierte manuelle Protokolle wurden nicht eingesehen. Automatisierte Node-/Chrome-/JUnit-Prüfungen sind davon getrennt. Abschnitt 2.5 nennt ausdrücklich WebStorm; dessen Ausführung oder die Akzeptanz von VS Code durch die Übungsleitung bleibt offen. Ebenso nicht lokal belegt: individuelle mündliche Erklärung, historische Starter-/IDE-Einrichtung und externe GitLab-/Moodle-Schritte.

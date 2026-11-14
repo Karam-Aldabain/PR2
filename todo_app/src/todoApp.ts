@@ -59,7 +59,6 @@ class TodoManager {
     if (!list || !stats) {
       throw new Error("Die Container #todo-list und #stats fehlen.");
     }
-    // Geöffnete Details merken, bevor die Liste neu aufgebaut wird.
     const expandedIds: string[] = [];
     const openDetails = list.querySelectorAll<HTMLDetailsElement>("details[open]");
     for (const details of openDetails) {

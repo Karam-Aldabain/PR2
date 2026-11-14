@@ -2,9 +2,7 @@ import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 
-/** Executes the request/response-handler subset used by this project's .http files.
- * This is a Node compatibility runner, not the JetBrains/WebStorm HTTP client.
- */
+/** Node compatibility runner for this project's .http format; not WebStorm. */
 export async function runHttpFile(file, baseUrl) {
   const source = (await fs.readFile(file, 'utf8')).replaceAll('\r\n', '\n');
   const variables = new Map([...source.matchAll(/^@(\w+)\s*=\s*(.+)$/gm)].map(match => [match[1], match[2].trim()]));
