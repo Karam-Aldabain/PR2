@@ -2,9 +2,7 @@
 
 ## Geprüfte Beiträge
 
-Bei Umsetzung und Git-Operationen wurde KI-Unterstützung verwendet. Persönliche Prüfungen und Freigaben werden getrennt von automatisch ausgeführten Schritten dokumentiert.
-
-Eigene Formulierungen, persönliche Prüfungen und gemeinsame Entscheidungen sind Teilnehmerangaben; Git-Metadaten authentifizieren weder die Person am Gerät noch ein GitLab-Konto. Die individuelle Erklärung des Gesamtergebnisses bleibt erforderlich.
+Umsetzung und Git-Operationen erfolgten mit KI-Unterstützung. Persönliche Beiträge, Prüfungen und gemeinsame Entscheidungen sind Teilnehmerangaben, keine unabhängig bestätigte Urheberschaft.
 
 Mazen bestätigte für den PUT-Kalendertest und README-Zusatz ausdrücklich: „I personally reviewed and approve this exact patch and attribution“. Commit 78be29ca1bc74ecbddbd0044f7684b9d4966640a (Autor und Committer Mazen), Integration 07b5169. Eigenständige Implementierung dieses Patches wird nicht behauptet. Der ursprüngliche genehmigte Patch ist unter 373a934:docs/approved-mazen-review.patch erhalten; SHA-256 01dc42da64f7c48381beb6a2fe9dec2c5f4e9b575f209062fa53e2bac9282ca7. Der Test bleibt in tests/api.test.mjs.
 
@@ -46,8 +44,8 @@ git merge-tree --write-tree "49972ae^1" "49972ae^2"
 git show --cc 49972ae -- docs/projektprofil.md
 ~~~
 
-merge-tree liefert hier erwartungsgemäß Exitcode 1 und „CONFLICT (content): Merge conflict in docs/projektprofil.md“. Das ist die historische Konkurrenz, kein ungelöster Konflikt in HUE1. Alle genannten Beiträge und Merge-Commits bleiben erreichbar. Commit ist lokal, Merge kombiniert lokale History, Fetch holt entfernte Stände und Push veröffentlicht sie; die lokalen Nachweise ersetzen keine individuellen Remote-Schritte.
+merge-tree liefert erwartungsgemäß Exitcode 1 und „CONFLICT (content): Merge conflict in docs/projektprofil.md“. HUE1 enthält die bereinigte Fassung; die genannten Beiträge und Merge-Commits bleiben erreichbar.
 
 ## Manuelle Prüfungen
 
-Der Benutzer meldete VS-Code-REST-Client-Prüfungen und Chrome-DevTools-Network-Inspektion für Teil 2 als abgeschlossen. Screenshots oder detaillierte manuelle Protokolle wurden nicht eingesehen. Automatisierte Node-/Chrome-/JUnit-Prüfungen sind davon getrennt. Abschnitt 2.5 nennt ausdrücklich WebStorm; dessen Ausführung oder die Akzeptanz von VS Code durch die Übungsleitung bleibt offen. Ebenso nicht lokal belegt: individuelle mündliche Erklärung, historische Starter-/IDE-Einrichtung und externe GitLab-/Moodle-Schritte.
+VS-Code-REST-Client- und Chrome-Network-Prüfungen wurden vom Benutzer als abgeschlossen gemeldet; detaillierte manuelle Nachweise wurden nicht geprüft. WebStorm-Ausführung beziehungsweise Tutorakzeptanz von VS Code, individuelle Erklärung und externe GitLab-/Moodle-Schritte sind nicht verifiziert.

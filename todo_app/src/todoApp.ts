@@ -8,7 +8,6 @@ function formatDate(value?: string): string {
 }
 
 class TodoManager {
-  // This is only a display cache; the server owns all domain changes.
   private todos: Todo[] = [];
   async load(): Promise<void> { this.todos = await api.all(); this.render(); }
   async add(title: string, description: string, priority: TodoPriority, dueDate?: string): Promise<Todo> {
@@ -198,7 +197,6 @@ const dialog = document.querySelector<HTMLDialogElement>("#todo-dialog")!;
 const newButton = document.querySelector<HTMLButtonElement>("#new-todo")!;
 let editingId: string | undefined;
 
-// Nach render() sind die bisherigen DOM-Elemente ersetzt worden.
 function focusTodoButton(id: string, selector: string): void {
   const cards = document.querySelectorAll<HTMLElement>(".todo-card");
   for (const card of cards) {
@@ -274,8 +272,6 @@ form.addEventListener("submit", async (event) => {
     const savedId = editingId;
     dialog.close();
     manager.render();
-    // close() stellt den Fokus zunächst auf den alten Auslöser zurück.
-    // render() ersetzt diesen; deshalb den neuen Button gezielt fokussieren.
     if (savedId !== undefined) {
       focusTodoButton(savedId, "button");
     } else {

@@ -4,7 +4,6 @@ export class HttpError extends Error {
   constructor(public readonly status: number, message: string) { super(message); }
 }
 
-// Calendar dates use YYYY-MM-DD, independently of the browser's time zone.
 export function validate(body: unknown, mode: "POST" | "PUT" | "PATCH"): Partial<EditableTodo> {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     throw new HttpError(400, "Ein JSON-Objekt ist erforderlich.");
