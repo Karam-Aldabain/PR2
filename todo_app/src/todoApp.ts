@@ -225,7 +225,6 @@ function resetForm(): void {
 async function startEditing(id: string): Promise<void> {
   try {
     const todo = await manager.find(id);
-    if (!todo) return;
     resetForm();
     editingId = id;
     titleInput.value = todo.title;

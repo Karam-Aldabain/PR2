@@ -2,6 +2,8 @@
 
 ## Geprüfte Beiträge
 
+Bei Umsetzung und Git-Operationen wurde KI-Unterstützung verwendet. Persönliche Prüfungen und Freigaben werden getrennt von automatisch ausgeführten Schritten dokumentiert.
+
 Eigene Formulierungen, persönliche Prüfungen und gemeinsame Entscheidungen sind Teilnehmerangaben; Git-Metadaten authentifizieren weder die Person am Gerät noch ein GitLab-Konto. Die individuelle Erklärung des Gesamtergebnisses bleibt erforderlich.
 
 Mazen bestätigte für den PUT-Kalendertest und README-Zusatz ausdrücklich: „I personally reviewed and approve this exact patch and attribution“. Commit 78be29ca1bc74ecbddbd0044f7684b9d4966640a (Autor und Committer Mazen), Integration 07b5169. Eigenständige Implementierung dieses Patches wird nicht behauptet. Der ursprüngliche genehmigte Patch ist unter 373a934:docs/approved-mazen-review.patch erhalten; SHA-256 01dc42da64f7c48381beb6a2fe9dec2c5f4e9b575f209062fa53e2bac9282ca7. Der Test bleibt in tests/api.test.mjs.
