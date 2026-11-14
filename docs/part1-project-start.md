@@ -1,5 +1,3 @@
-> Historical/preparation record: local integration and fresh-clone verification have since completed. See [current audit](final-local-audit.md). Team/conflict and remote requirements remain open.
-
 # Teil 1: Projektstart und Ausgangsstand
 
 ## Maßgebliche Aufgabenstellung
@@ -13,10 +11,8 @@ Der im Aufgabenblatt erwähnte Foliensatz „VL 2 - Praxisblock - Umgang mit Git
 - Gemeinsames Projekt laut vorhandenem origin: https://git.thm.de/pi2-ws2627-fr3f/todoapp-client.git
 - Repositorywurzel: todoapp-client, innerhalb des geöffneten PI2-Arbeitsbereichs.
 - Vorhandener main-Ausgangscommit: c6acd6e („Add Team section in Redme“).
-- Die bisherigen Commits stammen aus dem Starterprojekt; sie belegen keine eigenen Beiträge der aktuellen Übungsgruppe.
-- Der bisherige lokale Arbeitsbranch heißt feature/hue1-part2 und enthält noch nicht committete Arbeiten zu Teil 2 und Teil 3.
-- HUE1 wurde während der Teil-1-Bearbeitung lokal am unveränderten main-Commit angelegt. Das ist nur der gemeinsame Ausgangspunkt: Die neuen Dateien sind dadurch noch nicht nach HUE1 übernommen oder veröffentlicht.
-- Es wurde kein zweites Repository eingerichtet und weder main noch die bestehende Commit-Historie verändert.
+- HUE1 enthält die integrierten Teile 1–3 sowie die erhaltenen individuellen Beiträge und Konflikt-Merges. main bleibt auf c6acd6e.
+- Der lokale Stand ist nicht automatisch veröffentlicht. Aktueller Status: [lokale Prüfung](final-local-audit.md).
 
 Die Gruppe muss selbst bestätigen, dass origin tatsächlich ihr gemeinsamer Fork ist, das Projekt privat ist und alle Mitglieder sowie die Übungsleitung die geforderten Rechte besitzen. Eine passend aussehende URL allein beweist diese Eigenschaften nicht.
 
@@ -42,6 +38,6 @@ Die historische Anleitung ist in part1-readme.md unverändert erhalten. Für den
 
 Der aktuelle Express-Server startet mit einer leeren Sammlung. Browserneuladen erhält die Serverdaten; Serverneustart darf sie löschen. Der Java-Service wird separat aus echo-service mit dem Gradle Wrapper gestartet. Teil 1 ist die Git-/Projektgrundlage für beide Anwendungen und kein dritter Laufzeitdienst.
 
-## Nächste Schritte
+## Team und Abnahme
 
-Der konkrete Ablauf für echte Teambeiträge, den Konflikt und den frischen HUE1-Clone steht in [part1-team-workflow.md](part1-team-workflow.md). Der Erfüllungsstand einschließlich echter Prüfresultate steht in [part1-completion-report.md](part1-completion-report.md). Dokumentierte Schritte sind keine Behauptung, dass die noch erforderlichen Commits, Pushes und Merges bereits ausgeführt wurden.
+Siehe [Team-Historie und Erklärung](part1-team-workflow.md) und [aktueller Status](final-local-audit.md).

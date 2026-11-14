@@ -8,6 +8,7 @@ function formatDate(value?: string): string {
 }
 
 class TodoManager {
+  // This is only a display cache; the server owns all domain changes.
   private todos: Todo[] = [];
   async load(): Promise<void> { this.todos = await api.all(); this.render(); }
   async add(title: string, description: string, priority: TodoPriority, dueDate?: string): Promise<Todo> {
@@ -96,7 +97,6 @@ class TodoManager {
           clearError();
           await this.setStatus(todo.id, checkbox.checked ? "erledigt" : "offen");
           this.render();
-          // Auch den Tastaturfokus nach dem Ersetzen der Checkbox wiederherstellen.
           focusTodoButton(todo.id, ".todo-checkbox");
         } catch (error) { checkbox.checked = todo.status === "erledigt"; showError(error); }
         finally { checkbox.disabled = false; }
@@ -133,7 +133,6 @@ class TodoManager {
       details.appendChild(summary);
       const description = document.createElement("p");
       description.className = "mt-2 mb-2 text-break";
-      // Zeilenumbrüche ohne eigenes CSS erhalten.
       const lines = todo.description.split("\n");
       for (let i = 0; i < lines.length; i++) {
         if (i > 0) {
@@ -164,7 +163,6 @@ class TodoManager {
           clearError();
           await this.remove(todo.id);
           this.render();
-          // Nach dem Löschen verschwindet der auslösende Button.
           newButton.focus();
         } catch (error) { showError(error); }
         finally { deleteButton.disabled = false; }
@@ -250,7 +248,6 @@ newButton.addEventListener("click", () => {
   titleInput.focus();
 });
 cancelButton.addEventListener("click", () => dialog.close());
-// Gilt sowohl für Abbrechen als auch für Escape und erfolgreiches Speichern.
 dialog.addEventListener("close", resetForm);
 
 form.addEventListener("submit", async (event) => {
@@ -290,7 +287,6 @@ form.addEventListener("submit", async (event) => {
   finally { submitButton.disabled = false; cancelButton.disabled = false; }
 });
 
-// This is only a display cache; the server owns all domain changes.
 function clearError(): void { errorMsg.textContent = ""; errorMsg.classList.add("d-none"); }
 function showError(error: unknown): void {
   errorMsg.textContent = error instanceof Error ? error.message : "Die Anfrage ist fehlgeschlagen.";

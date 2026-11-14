@@ -20,7 +20,7 @@ npm.cmd run build
 npm.cmd start
 ```
 
-Die geprüfte Lösung wird lokal über feature/hue1-express, feature/hue1-vertx und feature/hue1-documentation in HUE1 integriert. main bleibt unverändert auf dem Startercommit c6acd6e. Ein Remote-Clone setzt voraus, dass das Team den vollständigen HUE1-Stand nach ausdrücklicher Freigabe veröffentlicht; lokale Integration allein veröffentlicht nichts.
+Die geprüfte Lösung ist lokal mit erhaltener Feature-Historie in HUE1 integriert. main bleibt unverändert auf dem Startercommit c6acd6e. Ein Remote-Clone setzt voraus, dass das Team den vollständigen HUE1-Stand nach ausdrücklicher Freigabe veröffentlicht; lokale Integration allein veröffentlicht nichts.
 
 Oberfläche: http://localhost:3000/ → API: http://localhost:3000/api/todos. Ein Server genügt; HTML nicht per Doppelklick öffnen. Mit Strg+C stoppen. Optional vor dem Start: $env:PORT = '3001'.
 
@@ -64,11 +64,11 @@ Fehlerformat: {"error":"Verständliche Fehlermeldung"}. 400 bei ungültigen Eing
 
 ## HTTP-Client und Browserprüfung
 
-Server starten und tests/todo-api.http in WebStorm mit „Run All Requests“ von oben nach unten ausführen. POST speichert die erzeugte ID als globale Variable todoId; Handler speichern Vergleichszustände. Jeder Lauf erstellt ein neues Todo und löscht es am Ende. Falls PORT geändert wurde, baseUrl anpassen. Die Datei wurde hier nicht in WebStorm ausgeführt; entsprechende Fälle wurden automatisiert über echte HTTP-Verbindungen geprüft.
+Server starten und tests/todo-api.http in WebStorm mit „Run All Requests“ von oben nach unten ausführen. POST speichert die erzeugte ID als globale Variable todoId; Handler speichern Vergleichszustände. Jeder Lauf erstellt ein neues Todo und löscht es am Ende. Falls PORT geändert wurde, baseUrl anpassen. Die Datei wurde durch den Assistenten automatisiert über echte HTTP-Verbindungen geprüft. Der Benutzer meldet manuelle VS-Code-REST-Client- und Chrome-Network-Prüfungen als abgeschlossen; Screenshots oder detaillierte manuelle Nachweise wurden nicht eingesehen. WebStorm-Ausführung bleibt gesondert unbestätigt. In VS Code zuerst die benannte Create-Anfrage ausführen: todoId verweist auf deren Antwort-ID; die eingebetteten client.test-Skripte sind für WebStorm.
 
 `npm.cmd test` führt zusätzlich die tatsächliche todo-api.http-Datei mit ihren Antwortprüfungen gegen einen isolierten Testserver aus. Für beide .http-Dateien Express auf 3000 und Vert.x auf 8888 starten und im Projektstamm `npm.cmd run test:http` ausführen. Dieser Node-Kompatibilitätsrunner unterstützt das hier verwendete Anfrage-/Handlerformat und ist keine WebStorm-Ausführung. Der Chrome-Netzwerktest schreibt Methoden, Payloads, Header, Status und Antwortinhalte nach `test-results/.../network-evidence.json` und als Playwright-Anhang. Die Aufzeichnung verwendet echte Browseranfragen und das Chrome DevTools Protocol; sie ersetzt keine behauptete manuelle DevTools-Bedienung.
 
-Browserablauf und Tutorfragen: [Demonstrationsanleitung](docs/part2-demo-guide.md). Nachweise je Anforderung: [Prüfbericht](docs/part2-compliance.md).
+Browserablauf und Tutorfragen: [Demonstrationsanleitung](docs/part2-demo-guide.md). Nachweise je Anforderung: [Prüfbericht](docs/final-local-audit.md).
 
 ## Fehlerbehebung
 
@@ -83,9 +83,9 @@ Browserablauf und Tutorfragen: [Demonstrationsanleitung](docs/part2-demo-guide.m
 
 Teil 1 behandelt Git und Projektstart gemäß HÜ1.pdf 1.1–1.3. Es ist kein zusätzlicher Server und verlangt keine weiteren API-Endpunkte. Die ursprüngliche README mit den damaligen Startbefehlen wurde unverändert als [historische Teil-1-README](docs/part1-readme.md) erhalten; sie beschreibt den Browserstand vor der API-Anbindung.
 
-Der [Projektstart und Ausgangsstand](docs/part1-project-start.md) dokumentiert den tatsächlich geprüften Starter mit drei Beispieltodos und den Übergang zur heutigen Anwendung. [docs/projektprofil.md](docs/projektprofil.md) enthält das geforderte gemeinsame Projektprofil. Der [Team- und Konfliktablauf](docs/part1-team-workflow.md) beschreibt die noch durchzuführenden echten Beiträge, den Merge-Konflikt und die HUE1-Abgabe. Der [Teil-1-Erfüllungsbericht](docs/part1-completion-report.md) trennt erledigte lokale Arbeit von offenen Team-/GitLab-Schritten.
+Der [Projektstart und Ausgangsstand](docs/part1-project-start.md) dokumentiert den tatsächlich geprüften Starter mit drei Beispieltodos und den Übergang zur heutigen Anwendung. [docs/projektprofil.md](docs/projektprofil.md) enthält das geforderte gemeinsame Projektprofil. Die [Team-Historie](docs/part1-team-workflow.md) erläutert den abgeschlossenen lokalen Konfliktablauf und die Abnahmevorbereitung. Der [aktuelle Prüfbericht](docs/final-local-audit.md) trennt lokale Ergebnisse von offenen externen Schritten.
 
-Der vollständige technische Stand ist lokal in HUE1 integriert und aus einem frischen lokalen Clone geprüft. main bleibt unverändert. Beide Teamnamen sind eingetragen. Mazen hat den KI-vorbereiteten PUT-Test und README-Zusatz persönlich geprüft und freigegeben; sein autorisierter Commit ist 78be29c. Ein echter technischer Konflikt wurde unter Karams Autorisierung erzeugt und mit Merge-Commit 889a6d3 aufgelöst. Die unabhängige Durchführung durch beide Studierende und eine gemeinsame Lösungsentscheidung sind damit nicht belegt. Remote-Zugriffs-/Veröffentlichungsnachweise stehen ebenfalls aus. Die Anleitung ersetzt deren Durchführung nicht. Abschnitt 1.4 (Fruit-API) und 2.7 (Hypermedia) sind freiwillig und nicht zusätzlich umgesetzt.
+Der vollständige technische Stand ist lokal in HUE1 integriert und aus einem frischen lokalen Clone geprüft. main bleibt unverändert. Beide Teamnamen sind eingetragen. Mazen hat den KI-vorbereiteten PUT-Test und README-Zusatz persönlich geprüft und freigegeben; sein autorisierter Commit ist 78be29c. Der spätere [Konflikt mit studentischen Formulierungen](docs/part1-live-conflict-evidence.md) enthält die Beiträge af1480a/ca73b64, die gemeinsam bestätigte Lösung 49972ae und Integration e6ffa17. Eigenständige Formulierung und gemeinsame Entscheidung sind Teilnehmerangaben; Konflikt und History wurden vom Assistenten geprüft. Remote-Zugriffs-/Veröffentlichungsnachweise stehen ebenfalls aus. Die Anleitung ersetzt deren Durchführung nicht. Abschnitt 1.4 (Fruit-API) und 2.7 (Hypermedia) sind freiwillig und nicht zusätzlich umgesetzt.
 
 ## Part 3 — Vert.x Echo Service
 
@@ -133,13 +133,11 @@ $env:GRADLE_USER_HOME = Join-Path (Resolve-Path ..\.tools) 'gradle-home'
 .\gradlew.bat run
 ```
 
-See [Part 3 demonstration guide](docs/part3-demo-guide.md) and [Part 3 verification report](docs/part3-compliance.md). The reviewed solution is integrated locally into `HUE1` with preserved feature merges; `main` is unchanged. Publication and Moodle submission require explicit approval.
+See [Part 3 demonstration guide](docs/part3-demo-guide.md) and [verification report](docs/final-local-audit.md). The reviewed solution is integrated locally into `HUE1` with preserved feature merges; `main` is unchanged. Publication and Moodle submission require explicit approval.
 
-## Combined review
+## Verifikation
 
-The latest [final local audit](docs/final-local-audit.md) includes the mandatory local Git history and fresh-clone requirements. It records current builds, runtime/browser checks, and outstanding team, manual-tool and remote submission checks.
-
-The latest [Part 2 and Part 3 audit](docs/part2-part3-audit.md) records the verified functionality, the malformed-URL error fix and the outstanding submission requirements. Successful automated tests do not establish HUE1 integration, actual group participation or completion of the manual WebStorm/DevTools demonstration.
+Der [aktuelle Prüfbericht](docs/final-local-audit.md) bündelt Pflichtanforderungen, Nachweisgrenzen und verbleibende Schritte. Das [Cleanup-Protokoll](docs/cleanup-report.md) dokumentiert die Bereinigung und die erneuten Prüfungen.
 
 ## Kalenderdaten und Grenzfalltests
 
