@@ -1,4 +1,20 @@
-# Independent final local audit — THM HÜ1
+# Current status update — 13 November 2026
+
+This update supersedes the manual-verification and remaining-action conclusions of the historical independent audit below. Its original execution results and checkpoint counts describe that earlier audit, not a new full audit. Current teamwork procedure and remaining checklist: [local teamwork continuation](part1-local-continuation.md).
+
+**User-reported manual verification:** The user stated: “I have now manually completed both the VS Code REST Client HTTP checks and the Chrome DevTools Network inspection for Part 2.” Record these two activities as completed according to the user's confirmation. The assistant has not inspected screenshots, a manual request-by-request log, or detailed DevTools evidence for this report, and does not independently certify their coverage or results. The report does not claim that WebStorm was used. If the assignment requires WebStorm specifically, that exact-tool requirement remains unverified; VS Code use alone does not establish an exception.
+
+**Assistant-executed checks in this conversation:** `npm.cmd run typecheck` passed. `npm.cmd test` passed after the HTTP-client corrections: TypeScript production build and all 9 Node test groups, including the actual 27-request HTTP file through the Node compatibility runner. These are automated checks, not the user's manual session. No new Chrome/Java/fresh-clone execution is claimed in this update; those results below are historical.
+
+**Corrections:** Restored the first three request separators; added a named create request and `@todoId` response reference for VS Code REST Client; taught the compatibility runner to skip request-name metadata. WebStorm response scripts remain in the file. VS Code response-variable support does not establish execution of those WebStorm assertion scripts by VS Code.
+
+**Part 1:** Existing approved contributions and the single-author technical conflict remain valid within their recorded scope. Independent edits by both students and their joint conflict-resolution decision are still pending. No new Mazen-attributed work or joint decision is inferred from this manual-check confirmation. Both students must supply their own conflicting profile edits, inspect the conflict, agree on the final wording, and approve their actual contributions before attribution. See the linked procedure.
+
+**Boundaries:** Authorized fixes and documentation are committed locally on HUE1 using the existing repository identity. No main modification, GitLab push or Moodle submission is authorized or performed. Remaining checks include genuine teamwork, individual explanation, exact-tool clarification if applicable, and external account/publication/submission requirements. A clean local technical snapshot does not certify complete academic submission.
+
+---
+
+# Historical independent final local audit — THM HÜ1
 
 Date: 13 November 2026 (America/Los_Angeles). **VERDICT B — LOCAL WORK COMPLETE, BUT MANUAL OR TEAM VERIFICATION REMAINS**.
 

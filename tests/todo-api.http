@@ -1,7 +1,5 @@
-# WebStorm HTTP Client: Run All Requests in order with npm start running.
-# POST saves todoId and original; subsequent handlers save the expected state.
-# A new run creates a fresh ID and deletes that resource at the end.
 @baseUrl = http://localhost:3000
+@todoId = {{createTodo.response.body.$.id}}
 
 ### Collection → expected 200
 GET {{baseUrl}}/api/todos
@@ -14,6 +12,7 @@ GET {{baseUrl}}/api/todos
 %}
 
 ### Create → expected 201
+# @name createTodo
 POST {{baseUrl}}/api/todos
 Content-Type: application/json
 

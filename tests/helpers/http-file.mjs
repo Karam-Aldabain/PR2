@@ -12,7 +12,7 @@ export async function runHttpFile(file, baseUrl) {
   const results = [];
   for (const block of source.split(/^### /m).slice(1)) {
     const [name, ...lines] = block.split('\n');
-    const requestText = lines.join('\n').split(/\n>\s*{%/)[0].trim();
+    const requestText = lines.join('\n').split(/\n>\s*{%/)[0].replace(/^# @name \w+\s*$/gm, '').trim();
     const script = block.match(/>\s*{%([\s\S]*?)%}/)?.[1];
     assert.ok(script, `${file}: ${name} needs response assertions`);
     const expanded = requestText.replace(/\{\{(\w+)\}\}/g, (_, key) => {
