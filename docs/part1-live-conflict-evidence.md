@@ -1,10 +1,10 @@
 # Zusammenarbeit und Merge-Konflikt
 
-## Beiträge und KI-Unterstützung
+## Geprüfte Beiträge
 
-Die Anwendung, Tests und Dokumentation wurden mit Codex-Unterstützung erstellt und bearbeitet. Git-Operationen wurden vom Assistenten unter den freigegebenen Identitäten ausgeführt. Eigene Formulierungen, persönliche Prüfungen und gemeinsame Entscheidungen sind Teilnehmerangaben; Git-Metadaten authentifizieren weder die Person am Gerät noch ein GitLab-Konto. Die individuelle Erklärung des Gesamtergebnisses bleibt erforderlich.
+Eigene Formulierungen, persönliche Prüfungen und gemeinsame Entscheidungen sind Teilnehmerangaben; Git-Metadaten authentifizieren weder die Person am Gerät noch ein GitLab-Konto. Die individuelle Erklärung des Gesamtergebnisses bleibt erforderlich.
 
-Mazen bestätigte für den assistentenvorbereiteten PUT-Kalendertest und README-Zusatz ausdrücklich: „I personally reviewed and approve this exact patch and attribution“. Commit 78be29ca1bc74ecbddbd0044f7684b9d4966640a (Autor und Committer Mazen), Integration 07b5169. Eigenständige Implementierung dieses Patches wird nicht behauptet. Der ursprüngliche genehmigte Patch ist unter 373a934:docs/approved-mazen-review.patch erhalten; SHA-256 01dc42da64f7c48381beb6a2fe9dec2c5f4e9b575f209062fa53e2bac9282ca7. Der Test bleibt in tests/api.test.mjs.
+Mazen bestätigte für den PUT-Kalendertest und README-Zusatz ausdrücklich: „I personally reviewed and approve this exact patch and attribution“. Commit 78be29ca1bc74ecbddbd0044f7684b9d4966640a (Autor und Committer Mazen), Integration 07b5169. Eigenständige Implementierung dieses Patches wird nicht behauptet. Der ursprüngliche genehmigte Patch ist unter 373a934:docs/approved-mazen-review.patch erhalten; SHA-256 01dc42da64f7c48381beb6a2fe9dec2c5f4e9b575f209062fa53e2bac9282ca7. Der Test bleibt in tests/api.test.mjs.
 
 ## Tatsächlicher Konflikt
 
