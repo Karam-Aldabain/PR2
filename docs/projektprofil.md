@@ -1,4 +1,4 @@
-Projektziel: Implementierung einer webbasierten Aufgabenverwaltung mit einer REST-API, die eine einfache und zuverlässige Organisation von Aufgaben ermöglicht.
+Projektziel: Entwicklung einer benutzerfreundlichen To-do-Webanwendung mit einer REST-API, die es Benutzern ermöglicht, Aufgaben einfach zu erstellen, zu bearbeiten, zu organisieren und zu löschen.
 
 Die bestehende Oberfläche unterstützt das Anlegen, Anzeigen, Bearbeiten und Löschen von Todos sowie Statuswechsel, optionale Termine, aufklappbare Details und Statistiken.
 
